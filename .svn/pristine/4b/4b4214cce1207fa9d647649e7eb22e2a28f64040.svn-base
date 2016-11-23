@@ -1,0 +1,19 @@
+//
+//  Net.h
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "cocos2d.h"
+
+@interface Net : CCSprite {
+}
+- (void)initData:(int)type;
+
+@property (nonatomic, readwrite) CGRect collideRect;
+@property (nonatomic, readwrite) BOOL isCollide;
+@end
+

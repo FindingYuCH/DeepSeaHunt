@@ -1,0 +1,105 @@
+//
+//  GameScene.h
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "cocos2d.h"
+@class Laser;
+
+@interface GameScene : CCLayer {
+	CCSprite *m_spGameSceneBg;
+    CCSprite *m_spGameSceneBg_;
+	CCSprite *m_spGamePhoto;
+	CCSprite *m_spGameInfoBox;
+	CCSprite *m_spGamePause;
+	CCSprite *m_spGameCannonBg;
+	CCSprite *m_spGameCannon;
+	CCSprite *m_spGameCannonUp;
+	CCSprite *m_spGameCannonDown;
+	CCSprite *m_spGameCannonLevel;
+	CCSprite *m_spGameCannonAdd;
+	CCSprite *m_spGameCannonDec;
+	CCSprite *m_spGameCannonAdd_;
+	CCSprite *m_spGameCannonDec_;
+	CCSprite *m_spGameTimeNum;
+	CCSprite *m_spGameSp;
+	CCSprite *m_spGameLevel;
+	CCSprite *m_spGameEXP;
+	CCSprite *m_spGameMoneyIcon;
+	CCSprite *m_spGameLaserTip;
+	Laser    *m_spGameLaser;
+	CCSprite *m_spGameLevelUpTip;
+    
+    CCMenu *m_menuUiHead;
+    CCMenu *m_menuCannonControl;
+    CCMenu *m_menuGame;
+	
+	CCSpriteBatchNode *m_spbnBullets;
+	CCSpriteBatchNode *m_spbnFishnets;
+	CCSpriteBatchNode *m_spbnMoneys;
+	CCSpriteBatchNode *m_spbnFishs0;
+	CCSpriteBatchNode *m_spbnFishs1;
+	CCSpriteBatchNode *m_spbnFishs2;
+	CCSpriteBatchNode *m_spbnFishs3;
+	CCSpriteBatchNode *m_spbnFishs4;
+	CCSpriteBatchNode *m_spbnFishs5;
+	CCSpriteBatchNode *m_spbnFishs6;
+	CCSpriteBatchNode *m_spbnFishs7;
+	CCSpriteBatchNode *m_spbnFishs8;
+	CCSpriteBatchNode *m_spbnFishs9;
+	
+	CCLabelAtlas *m_labelGameMoneyNum;
+	CCLabelAtlas *m_labelGameLevelNum;
+	CCLabelAtlas *m_labelGameMoneyTimeNum;
+	CCLabelTTF *m_labelGameLevelTip;
+	
+	CCProgressTimer *m_pgGameExpBar;
+	/*
+	 * cnt ( count ) 计数
+	 */
+	int m_cntGameLevel;
+	int m_cntGameCannonLevel;	
+	int m_cntGameCannonFire;
+	int m_cntGameCannonUpOff;
+	int m_cntGameBulletIndex;	
+	int m_cntGameLaserTip;
+	int m_cntGameLaserFire;
+	int m_cntGameLevelUp;
+	int m_cntGameLineupType;
+	int m_cntGameLineup;
+	int m_cntGameTime;
+	int m_cntGameRestore;
+    
+	
+	BOOL m_isGameLevelUP;
+	BOOL m_isGameLaserFiring;
+	BOOL m_isGameCannonFiring;
+	BOOL m_isGameLaserTip;
+	BOOL m_isGameLineup;
+    
+    CGSize m_sizeGameLevel;
+}
+
+@property (assign) int g_cntGameMoney;
+@property (assign) int g_cntGameSp;
+@property (assign) int g_cntGameExp;
+@property (assign) int g_cntGameLineupStage;
+
+
++ (id)scene;
++ (id)sharedGameScene;
+- (void)addNetOn:(CGPoint)pos;
+- (void)addMoney:(CGPoint)pos;
+- (void)addBullet:(double)dir;
+
+- (void)onPhoto;
+- (void)onPause;
+- (void)onAddCannonLV;
+- (void)onDecCannonLV;
+
+@end
+
+

@@ -1,0 +1,23 @@
+//
+//  GameDefine.h
+//  seaHunting_ios
+//
+//  Created by 阮 东海 on 12-4-5.
+//  Copyright 2012 神与自然. All rights reserved.
+//
+
+#import "SimpleAudioEngine.h"
+#import <Foundation/Foundation.h>
+#import "cocos2d.h"
+
+
+@interface GameDefine : CCNode {
+    
+}
+@end
+
+CGSize g_sceneSize;
+BOOL g_isDoubleScore;
+BOOL g_hasInGame;
+BOOL g_hasSound;
+BOOL g_isIpad;

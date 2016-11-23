@@ -1,0 +1,52 @@
+//
+//  Money.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "Money.h"
+#import "SimpleAudioEngine.h"
+#import "GameDefine.h"
+
+
+@implementation Money
+- (void)initData
+{
+	frameWidth = [self contentSize].width / 3;
+	frameHeight = [self contentSize].height;
+	
+	[self setTextureRect:CGRectMake(0, 0, frameWidth, frameHeight)];
+	CCAnimation *animation = [CCAnimation animation];
+	[animation setDelayPerUnit:0.3f];
+	for(int i = 0; i < 3; i++) 
+	{
+		[animation addSpriteFrameWithTexture:self.texture 
+                                        rect:CGRectMake(frameWidth * i, 0, frameWidth, frameHeight)];
+	}	
+	id action = [CCAnimate actionWithAnimation: animation];
+	[self runAction:[CCRepeatForever actionWithAction:action]];	
+}
+
+- (void)setActions
+{		
+	int time = sqrtf((self.position.x * self.position.x) + (self.position.y * self.position.y)) / (180 * g_sceneSize.width / 480);
+	id flyToGoal = [CCMoveTo actionWithDuration:time position:ccp(20 * g_sceneSize.width / 480, 20* g_sceneSize.width / 480)];
+	id finish = [CCCallFunc actionWithTarget:self selector:@selector(clean)];
+	[self runAction:[CCSequence actions:flyToGoal, finish, nil]];
+}
+
++ (id)moneyWithFile:(NSString *)fileSrc
+{
+	self = [Money spriteWithFile:fileSrc];
+	return self;
+}
+
+- (void)clean
+{
+    //[[SimpleAudioEngine sharedEngine] playEffect:@"money.wav"];
+	[self unscheduleAllSelectors];
+	self.visible = NO;
+}
+@end

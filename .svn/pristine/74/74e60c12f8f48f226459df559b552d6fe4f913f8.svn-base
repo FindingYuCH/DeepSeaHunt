@@ -1,0 +1,80 @@
+//
+//  Bullet.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "Bullet.h"
+#import "GameDefine.h"
+#import "GameScene.h"
+#import "Net.h"
+
+@implementation Bullet
+
+@synthesize collideRect;
+
+- (void)setDirection:(double) direction
+{
+	//基本信息
+	double degrees = CC_RADIANS_TO_DEGREES(direction);
+	float offX = (50 * g_sceneSize.width / 480) * sin(direction);
+	float offY = (50 * g_sceneSize.width / 480) * cos(direction);
+	float foraway = 0;
+	float a = CC_RADIANS_TO_DEGREES(atan(0.75));
+	if (degrees >= a) {
+		foraway = (g_sceneSize.width / 2 - offX) / sin(direction);
+	} 
+	else if (degrees <= -a) 
+	{
+		foraway = -(g_sceneSize.width / 2 + offX) / sin(direction);
+	}
+	else
+	{
+		foraway = (g_sceneSize.height - (10 + offY)) / cos(direction);	
+	}
+	self.position = ccp(0, 0);
+    
+    id move;
+    if (g_isIpad) {
+        self.position = ccp(g_sceneSize.width / 2 + offX, 30 + offY);
+        
+        move = [CCMoveTo actionWithDuration:(ccTime)(foraway/250) 
+                                   position:ccp(self.position.x + foraway * sin(direction), self.position.y + foraway * cos(direction))];
+    } else {
+        self.position = ccp(g_sceneSize.width / 2 + offX, 10 + offY);
+        move = [CCMoveTo actionWithDuration:(ccTime)(foraway/150) 
+                                   position:ccp(self.position.x + foraway * sin(direction), self.position.y + foraway * cos(direction))];
+    }
+	
+	[self runAction:[CCRotateTo actionWithDuration:0 angle:degrees]];
+	
+    
+	
+	
+	id finish = [CCCallFunc actionWithTarget:self selector:@selector(explode)];
+	
+	//碰撞区域
+	collideRect = CGRectMake(0, 0, [self contentSize].width, [self contentSize].height);
+	
+	[self runAction:[CCSequence actions: move,finish, nil]];
+	
+}
+
+- (void)explode
+{
+	//生成一个网
+	[[GameScene sharedGameScene] addNetOn:self.position]; 	
+	
+	self.visible = NO;
+	[self unscheduleAllSelectors];
+	[self stopAllActions];
+}
+
+- (void)dealloc
+{
+	[super dealloc];
+}
+
+@end

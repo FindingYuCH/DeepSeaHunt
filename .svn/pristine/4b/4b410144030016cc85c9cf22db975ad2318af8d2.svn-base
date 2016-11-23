@@ -1,0 +1,165 @@
+//
+//  SelectScene.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "SelectScene.h"
+#import "CCDirector_.h"
+#import "GameDefine.h"
+#import "GameScene.h"
+#import "G.h"
+
+@implementation SelectScene
+
++ (id)scene
+{
+	CCScene *scene = [CCScene node];
+    SelectScene *layer = [SelectScene node];
+    [scene addChild:layer];
+	return scene;
+}
+
+- (id)init
+{
+	if ((self = [super init])) {
+		//背景
+		CCSprite *m_spComBg = [CCSprite spriteWithFile:@"gamescene1.png"];
+		m_spComBg.anchorPoint = ccp(0.5, 0.5);
+		m_spComBg.position = ccp(g_sceneSize.width / 2, g_sceneSize.height / 2);
+		[self addChild: m_spComBg];
+		
+		//标题
+		CCSprite *m_spSelectTitle = [CCSprite spriteWithFile:@"select_title.png"];
+		m_spSelectTitle.position = ccp(g_sceneSize.width / 2, g_sceneSize.height - 10);
+		m_spSelectTitle.anchorPoint = ccp(0.5f, 1);
+		[self addChild: m_spSelectTitle];
+		
+        //场景
+		[G drawBox:self pos:ccp(g_sceneSize.width / 8, g_sceneSize.height / 5) row:(int)(g_sceneSize.height * 3 / 5 - 16) / 8  col:(int)(g_sceneSize.width * 3 / 4 - 16) / 8];
+        
+        
+		m_spGameScene0 = [CCSprite spriteWithFile:@"gamescene1.png"];
+		[m_spGameScene0 runAction:[CCScaleTo actionWithDuration:0 scale:0.5]];
+		m_spGameScene0.position = ccp(g_sceneSize.width / 2, g_sceneSize.height / 2 - 10);
+		[self addChild:m_spGameScene0];
+		
+		m_spGameScene1 = [CCSprite node];
+		CCSprite *m_spGameScene1_0 = [CCSprite spriteWithFile:@"gamescene2.png"];
+		[m_spGameScene1_0 runAction:[CCScaleTo actionWithDuration:0 scale:0.5]];
+		[m_spGameScene1 addChild:m_spGameScene1_0];
+		CCSprite *m_spGameScene1_1 = [CCSprite spriteWithFile:@"select_double.png"];
+		[m_spGameScene1 addChild:m_spGameScene1_1];
+		m_spGameScene1.position = ccp(g_sceneSize.width / 2, g_sceneSize.height / 2 - 10);
+		m_spGameScene1.visible = NO;	
+		[self addChild:m_spGameScene1];
+		
+        
+		CCSprite *m_spArrowL = [CCSprite spriteWithFile:@"com_arrow.png"];
+        m_spArrowL.anchorPoint = ccp(1, 0.5f);
+		m_spArrowL.position = ccp(g_sceneSize.width / 8 + 5, g_sceneSize.height / 2);
+		[m_spArrowL runAction:[CCRotateTo actionWithDuration:0 angle:180]];
+		[self addChild:m_spArrowL];
+		
+		CCSprite *m_spArrowR = [CCSprite spriteWithFile:@"com_arrow.png"];
+        m_spArrowR.anchorPoint = ccp(1, 0.5f);
+		m_spArrowR.position = ccp(g_sceneSize.width - g_sceneSize.width / 8 - 5, g_sceneSize.height / 2);
+		[self addChild:m_spArrowR];
+        
+		//按钮		
+		CCMenuItem *m_menuItemOk = [CCMenuItemImage itemWithNormalImage:@"com_btn_ok.png"
+                                                          selectedImage:@"com_btn_ok_.png" target: self selector:@selector(onUserOk)];
+		m_menuItemOk.position = ccp(0, 0);
+		m_menuItemOk.anchorPoint = ccp(0, 0);
+        
+		CCMenuItem *m_menuItemBack = [CCMenuItemImage itemWithNormalImage:@"com_btn_back.png"
+                                                            selectedImage:@"com_btn_back_.png" target: self selector:@selector(onUserBack)];
+		m_menuItemBack.position = ccp(g_sceneSize.width, 0);
+		m_menuItemBack.anchorPoint = ccp(1, 0);
+        
+		CCMenu *menu = [CCMenu menuWithItems:m_menuItemOk, m_menuItemBack, nil];
+		menu.position = ccp(0, 0);
+		menu.anchorPoint = ccp(0, g_sceneSize.height);
+		[self addChild:menu z:99 tag:2];
+		
+		self.isTouchEnabled = YES;
+        
+	}
+	return self;
+}
+
+-(void) onUserOk
+{
+	if (m_spGameScene1.visible == NO) {
+		g_isDoubleScore = NO;
+	} else {
+		g_isDoubleScore = YES;
+	}
+	
+    if (g_hasInGame) {
+        [[CCDirector sharedDirector] popScene];
+    } else {
+        [[CCDirector sharedDirector] popScene];
+        [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:1 scene:[GameScene scene]]];
+    }
+    
+}
+
+-(void) onUserBack
+{
+    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionFadeBL class] duration:1];
+}
+
+/***************************************************************************************/
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  
+{  
+	// Choose one of the touches to work with
+	UITouch *touch = [touches anyObject];
+	CGPoint location = [touch locationInView:[touch view]];
+	location = [[CCDirector sharedDirector] convertToGL:location];
+	
+	
+	//左边
+	if (CGRectIntersectsRect(CGRectMake(location.x, location.y, 1, 1), CGRectMake(g_sceneSize.width / 8, g_sceneSize.height / 5, g_sceneSize.width / 8, g_sceneSize.height * 3 / 5))) {
+		if (m_spGameScene1.visible == NO) {
+			m_spGameScene1.visible = YES;
+		} else {
+			m_spGameScene1.visible = NO;
+		}
+	}
+	
+	//中间
+	else if (CGRectIntersectsRect(CGRectMake(location.x, location.y, 1, 1), CGRectMake(g_sceneSize.width * 2 / 8, g_sceneSize.height / 5, g_sceneSize.width * 4 / 8, g_sceneSize.height * 3 / 5))) {
+		if (m_spGameScene1.visible == NO) {
+			g_isDoubleScore = NO;
+		} else {
+			g_isDoubleScore = YES;
+		}
+		
+        if (g_hasInGame) {
+            [[CCDirector sharedDirector] popScene];
+            
+        } else {
+            [[CCDirector sharedDirector] popScene];
+            [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:1 scene:[GameScene scene]]];
+        }
+        
+        
+	}
+	
+	//右边
+	else if (CGRectIntersectsRect(CGRectMake(location.x, location.y, 1, 1), CGRectMake(g_sceneSize.width * 6 / 8, g_sceneSize.height / 5, g_sceneSize.width / 8, g_sceneSize.height * 3 / 5))) {
+        
+		if (m_spGameScene1.visible == NO) {
+			m_spGameScene1.visible = YES;
+		} else {
+			m_spGameScene1.visible = NO;
+		}
+	}
+}  
+
+@end
+

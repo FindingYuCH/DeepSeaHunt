@@ -1,0 +1,36 @@
+//
+//  Num.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "Num.h"
+#import "GameDefine.h"
+
+
+@implementation Num
+- (void)initData:(int)value position:(CGPoint)pos
+{
+	NSString *strLabel = [[NSString alloc] initWithFormat:@"%d",value];
+    CCLabelAtlas *m_labelAtlas;
+    if (g_isIpad) {
+        m_labelAtlas = [CCLabelAtlas labelWithString:strLabel charMapFile:@"game_money_num.png" itemWidth:32 itemHeight:31 startCharMap:'0'];
+    } else {
+        m_labelAtlas = [CCLabelAtlas labelWithString:strLabel charMapFile:@"game_money_num.png" itemWidth:15 itemHeight:17 startCharMap:'0'];
+    }
+    
+	self.position = pos;
+	[strLabel release];
+	[self addChild:m_labelAtlas];
+	[self schedule:@selector(destroy) interval:1];
+}
+
+- (void)destroy
+{	
+	[self unscheduleAllSelectors];
+	[self removeFromParentAndCleanup:YES];
+}
+@end
+

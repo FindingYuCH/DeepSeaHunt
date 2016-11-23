@@ -1,0 +1,24 @@
+//
+//  SettingScene.h
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "cocos2d.h"
+
+
+@interface SettingScene : CCLayer {
+    //    CCSprite *m_spSettingSoundValueBg;
+    //    CCSprite *m_spSettingSoundValue;
+    //    int m_cntSoundValue;
+    //    int m_cntSoundValueTemp;
+    
+	CCSprite *m_spSettingWord;
+	CCSprite *m_spSettingFlag;
+	CCSprite *m_spSettingBox;
+	BOOL hasSoundTemp;
+}
++ (id)scene;
+@end

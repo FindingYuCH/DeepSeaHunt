@@ -1,0 +1,312 @@
+//
+//  Fish.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "Fish.h"
+#import "Money.h"
+#import "GameDefine.h"
+#import "GameScene.h"
+#import "Num.h"
+
+@implementation Fish
+
+//金币
+static int golds[] = { 1, 2, 4, 7, 10, 15, 20, 30, 40, 50 };
+
+//帧数
+static int frames[] = { 5, 7, 5, 7, 9, 9, 8, 8, 8, 9};
+
+//能量
+static int sps[] = { 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5 };
+
+//经验
+static int exps[] = { 1, 1, 1, 2, 2, 2, 3, 3, 4, 4, 5 };
+
+//速度
+static int speeds[] = 
+{
+	2,
+	3,
+	2,                                                                                                                                                                                                                                 
+	3,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2,
+	2
+};
+
+
+@synthesize info, state, lineupDirection;
+
+- (void)initData:(int)type
+{
+	//基本信息
+	info.type = type;
+	info.sp = sps[type];
+	info.gold = golds[type];
+	info.speed = speeds[type] * g_sceneSize.width / 480 * 0.75;
+	info.exp = exps[type];
+	info.frameWidth = [self contentSize].width;
+	info.frameHeight = [self contentSize].height / frames[type];
+	info.collideRect = CGRectMake(0, 0, info.frameWidth, info.frameHeight);
+	
+	[self randonPosition];
+	
+	
+	//执行动作
+	CCAnimation *animation=[CCAnimation animation];
+	[animation setDelayPerUnit:0.3f];
+	for(int i = 0; i < frames[type]; i++) 
+	{
+		[animation addSpriteFrameWithTexture:self.texture 
+                                        rect:CGRectMake(0, self.info.frameHeight * i, self.info.frameWidth, self.info.frameHeight)];
+	}	
+	id action = [CCAnimate actionWithAnimation: animation];
+	[self runAction:[CCRepeatForever actionWithAction:action]];	
+}
+
+
+- (void)update
+{
+	count += 1;     
+	switch (state) {
+		case STATE_READY:
+			
+			break;
+		case STATE_SWIMMING:
+			//屏幕外重新进入
+			if (self.position.x < -info.frameWidth / 2 - 50) 
+			{ 
+				[self setDirection:DIR_RIGHT];
+			}
+			else if (self.position.x > g_sceneSize.width + info.frameWidth / 2 + 50)
+			{
+				[self setDirection:DIR_LEFT];
+			}
+			else if(self.position.y < -info.frameHeight / 2 - 50)
+			{
+				[self setDirection:DIR_UP];
+			}
+			else if(self.position.y > g_sceneSize.height + info.frameHeight / 2 + 50) 
+			{
+				[self setDirection:DIR_DOWN];
+			}
+			else 
+			{
+				if (count >= 100 + info.type * 2) {
+					count = 0;
+					if (info.type != 9) {
+						int temp = random() % 3 - 1;
+						curDir += temp;
+						if (curDir < 0) {
+							curDir = 7;
+						}
+						if (curDir > 7) {
+							curDir = 0;
+						}
+                    }
+					
+                    [self setDirection:curDir];
+				}
+			}
+			//[self runAction:[CCPlace actionWithPosition:ccp(self.position.x + speedX, self.position.y + speedY)]];
+			self.position = ccpAdd(self.position, ccp(speedX, speedY));
+			info.collideRect = CGRectMake(self.position.x - info.frameWidth / 2, self.position.y - info.frameHeight / 4, info.frameWidth, info.frameHeight / 2);
+			break;
+		case STATE_ACTION:
+			//出屏幕外消失
+			if ([self isOutScreen] == YES) 
+			{ 
+				//消失
+				state = STATE_READY;
+				self.visible = false;
+			}
+			
+            GameScene *gameScene = [GameScene sharedGameScene];
+			if (gameScene.g_cntGameLineupStage == 0) {
+				self.position = ccpAdd(self.position, ccp(speedX * 3, speedY * 3));
+			} else {
+				if (count >= 100) {
+					count = 0;
+					[self setDirection:lineupDirection];
+				}
+				self.position = ccpAdd(self.position, ccp(speedX, speedY));
+			}
+            
+			info.collideRect = CGRectMake(self.position.x - info.frameWidth / 2, self.position.y - info.frameHeight / 4, info.frameWidth, info.frameHeight / 2);			
+			break;	
+		case STATE_CATCHED:
+			count ++;
+			if (count % 10 > 5) {
+				self.visible = true;
+			} else {
+				self.visible = false;
+			}
+			
+			if (count >= 60) {
+				//生成一个金币
+				[[GameScene sharedGameScene] addMoney:self.position];
+				
+				Num *num = [Num node];
+				if (g_isDoubleScore) {
+					[num initData:info.gold * 2 position:self.position];
+				} else {
+					[num initData:info.gold position:self.position];
+				}
+				
+				[[GameScene sharedGameScene] addChild:num];
+				
+				//消失
+				state = STATE_READY;
+				self.visible = false;
+				
+				//及其它东西
+				GameScene *gameScene = [GameScene sharedGameScene];
+				if (g_isDoubleScore == YES) {
+					gameScene.g_cntGameSp += info.sp * 2;
+					gameScene.g_cntGameMoney += info.gold * 2;
+					gameScene.g_cntGameExp += info.exp * 2;
+				} else {
+					gameScene.g_cntGameSp += info.sp;
+					gameScene.g_cntGameMoney += info.gold;
+					gameScene.g_cntGameExp += info.exp;
+				}
+			}
+            
+			break;		
+		default:
+			break;
+	}
+}
+
+- (void)setCount:(int)value
+{
+	count = value;
+}
+
+- (void)setDirection:(Dir)dir
+{
+    
+	curDir = dir;
+	id turn;
+	double a = sin(CC_DEGREES_TO_RADIANS(45));
+	switch (dir) {
+		case DIR_UP:
+			turn = [CCRotateTo actionWithDuration:0 angle:270];
+			speedX = 0;
+			speedY = info.speed;
+			break;
+		case DIR_UP_RIGHT:
+			turn = [CCRotateTo actionWithDuration:0 angle:315];
+			speedX = info.speed * a;
+			speedY = info.speed * a;
+			break;
+		case DIR_RIGHT:
+			turn = [CCRotateTo actionWithDuration:0 angle:0];
+			speedX = info.speed;
+			speedY = 0;
+			break;
+		case DIR_RIGHT_DOWN:
+			turn = [CCRotateTo actionWithDuration:0 angle:45];
+			speedX = info.speed * a;
+			speedY = -info.speed * a;
+			break;
+		case DIR_DOWN:
+			turn = [CCRotateTo actionWithDuration:0 angle:90];
+			speedX = 0;
+			speedY = -info.speed;
+			break;
+		case DIR_DOWN_LEFT:
+			turn = [CCRotateTo actionWithDuration:0 angle:135];
+			speedX = -info.speed * a;
+			speedY = -info.speed * a;
+			break;
+		case DIR_LEFT:
+			turn = [CCRotateTo actionWithDuration:0 angle:180];
+			speedX = -info.speed;
+			speedY = 0;
+			break;
+		case DIR_LEFT_UP:
+			turn = [CCRotateTo actionWithDuration:0 angle:225];
+			speedX = -info.speed * a;
+			speedY = info.speed * a;
+			break;
+		default:
+			break;
+	}
+	[self runAction:turn];
+}
+
+- (BOOL)isOutScreen
+{
+	switch (curDir) {
+		case DIR_UP:
+			if (self.position.y - info.frameHeight / 2 >= g_sceneSize.height) {
+				return YES;
+			}
+			break;
+		case DIR_UP_RIGHT:
+			if (self.position.y - info.frameHeight / 2 >= g_sceneSize.height || self.position.x - info.frameWidth / 2 >= g_sceneSize.width) {
+				return YES;
+			}
+			break;
+		case DIR_RIGHT:
+			if (self.position.x - info.frameWidth / 2 >= g_sceneSize.width) {
+				return YES;
+			}
+			break;
+		case DIR_RIGHT_DOWN:
+			if (self.position.y + info.frameHeight / 2 <= 0 || self.position.x - info.frameWidth / 2 >= g_sceneSize.width) {
+				return YES;
+			}
+			break;
+		case DIR_DOWN:
+			if (self.position.y + info.frameHeight / 2 <= 0) {
+				return YES;
+			}
+			break;
+		case DIR_DOWN_LEFT:
+			if (self.position.y + info.frameHeight / 2 <= 0 || self.position.x + info.frameWidth / 2 <= 0) {
+				return YES;
+			}
+			break;
+		case DIR_LEFT:
+			if (self.position.x + info.frameWidth / 2 <= 0) {
+				return YES;
+			}
+			break;
+		case DIR_LEFT_UP:
+			if (self.position.x + info.frameWidth / 2 <= 0 || self.position.x - info.frameWidth / 2 >= g_sceneSize.width) {
+				return YES;
+			}
+			break;
+		default:
+			break;
+	}
+	return NO;
+}
+
+- (void)randonPosition
+{
+	//随机位置
+	int x = random() % (int)g_sceneSize.width;
+	int y = random() % (int)g_sceneSize.height;
+	int r = random() % 4;
+	if (r == 0) {
+		self.position = ccp(- 100, y);
+	} else if (r == 1) {
+		self.position = ccp(g_sceneSize.width + 100, y);
+	} else if (r == 2) {
+		self.position = ccp(x, -100);
+	}  else if (r == 3) {
+		self.position = ccp(x, g_sceneSize.height + 100);
+	}
+}
+@end

@@ -1,0 +1,21 @@
+//
+//  SelectScene.h
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "cocos2d.h"
+
+
+@interface SelectScene : CCLayer {
+	CCSprite *m_spGameScene0;
+	CCSprite *m_spGameScene1;
+	CCSprite *m_spCurScene;
+}
+
++ (id)scene;
+
+@end
+

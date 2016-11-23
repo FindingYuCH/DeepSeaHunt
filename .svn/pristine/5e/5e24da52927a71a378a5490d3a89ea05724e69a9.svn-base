@@ -1,0 +1,71 @@
+//
+//  MenuMainScene.h
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "cocos2d.h"
+#import "GCHelper.h"
+
+typedef enum {
+    kMessageTypeRandomNumber = 0,
+    kMessageTypeGameBegin,
+    kMessageTypeMove,
+    kMessageTypeGameOver
+} MessageType;
+
+typedef struct {
+    MessageType messageType;
+} Message;
+
+typedef struct {
+    Message message;
+    uint32_t randomNumber;
+} MessageRandomNumber;
+
+typedef struct {
+    Message message;
+} MessageGameBegin;
+
+typedef struct {
+    Message message;
+} MessageMove;
+
+typedef struct {
+    Message message;
+    BOOL player1Won;
+} MessageGameOver;
+
+typedef enum {
+    kEndReasonWin,
+    kEndReasonLose,
+    kEndReasonDisconnect
+} EndReason;
+
+typedef enum {
+    kGameStateWaitingForMatch = 0,
+    kGameStateWaitingForRandomNumber,
+    kGameStateWaitingForStart,
+    kGameStateActive,
+    kGameStateDone
+} GameState;
+
+@interface MenuMainScene : CCLayer<GCHelperDelegate>{
+	CCSpriteBatchNode *m_spbnBubbles;
+    
+    BOOL isPlayer1;        
+    CCLabelBMFont *debugLabel;
+    GameState gameState;
+    
+    uint32_t ourRandom;   
+    BOOL receivedRandom;    
+    NSString *otherPlayerID;
+    
+    
+    CCLabelBMFont *player1Label;
+    CCLabelBMFont *player2Label;
+}
++ (id)scene;
+@end

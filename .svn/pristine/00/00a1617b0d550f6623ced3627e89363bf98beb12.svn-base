@@ -1,0 +1,21 @@
+//
+//  Laser.h
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "cocos2d.h"
+
+@interface Laser : CCSprite {
+	double dir;
+	//y = kx + b;
+	double k;
+	double b;
+}
+
+- (void)setLaserData:(double)diretion;
+- (BOOL)collidesWithRect:(CGRect)rect;
+@end

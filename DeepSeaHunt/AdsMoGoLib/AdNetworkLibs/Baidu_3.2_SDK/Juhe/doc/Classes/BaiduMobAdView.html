@@ -1,0 +1,790 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>BaiduMobAdView Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 789)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">BaiduMobAdSdk </a></h1>
+				<a id="developerHome" href="../index.html">Baidu</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">BaiduMobAdView Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/AdType">&nbsp;&nbsp;&nbsp;&nbsp;AdType</option>
+	
+	<option value="//api/name/AdUnitTag">&nbsp;&nbsp;&nbsp;&nbsp;AdUnitTag</option>
+	
+	<option value="//api/name/Version">&nbsp;&nbsp;&nbsp;&nbsp;Version</option>
+	
+	<option value="//api/name/autoplayEnabled">&nbsp;&nbsp;&nbsp;&nbsp;autoplayEnabled</option>
+	
+	<option value="//api/name/delegate">&nbsp;&nbsp;&nbsp;&nbsp;delegate</option>
+	
+	<option value="//api/name/isActive">&nbsp;&nbsp;&nbsp;&nbsp;isActive</option>
+	
+	<option value="//api/name/textColor">&nbsp;&nbsp;&nbsp;&nbsp;textColor</option>
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/request">&nbsp;&nbsp;&nbsp;&nbsp;- request</option>
+	
+	<option value="//api/name/start">&nbsp;&nbsp;&nbsp;&nbsp;- start</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_属性">属性</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/AdType">AdType</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/AdUnitTag">AdUnitTag</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/Version">Version</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/autoplayEnabled">autoplayEnabled</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/delegate">delegate</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/isActive">isActive</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/textColor">textColor</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/request">request</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/start">start</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="BaiduMobAdView Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">BaiduMobAdView Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">UIView</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">BaiduMobAdView.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>广告类型
+0 banner广告
+2 前贴片 BaiduMobAdViewTypeVABeforeVideo
+3 暂停视图 BaiduMobAdViewTypeVAPause
+4 切换视图 BaiduMobAdViewTypeVASwitchView</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						<a title="属性" name="task_属性"></a>
+						
+<h3 class="subsubtitle task-title">属性</h3>
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/delegate">&nbsp;&nbsp;delegate</a></code>
+		<span class="tooltip"><p>委托对象</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/AdType">&nbsp;&nbsp;AdType</a></code>
+		<span class="tooltip"><p>广告类型</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/textColor">&nbsp;&nbsp;textColor</a></code>
+		<span class="tooltip"><p>设置／获取当前广告（文字）的文本颜色</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/autoplayEnabled">&nbsp;&nbsp;autoplayEnabled</a></code>
+		<span class="tooltip"><ul>
+<li>设置是否需要启动SDK的自动轮播机制</li>
+<li>autoplayEnabled设置为YES（默认值）时，SDK会自动根据一定的时间间隔播放不同的广告。开发者无须编写额外的代码控制广告的更新和展示。request接口不可用</li>
+<li>autoplayEnabled设置为NO（默认值）时，SDK不会主动调用第一个广告的展示，并产生回调函数 <a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/willDisplayAd:">[BaiduMobAdViewDelegate willDisplayAd:]</a>或者<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/failedDisplayAd:">[BaiduMobAdViewDelegate failedDisplayAd:]</a>,
+开发者需要在回调函数<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/willDisplayAd:">[BaiduMobAdViewDelegate willDisplayAd:]</a>或者<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/failedDisplayAd:">[BaiduMobAdViewDelegate failedDisplayAd:]</a>中调用request接口请求一次广告展示</li>
+</ul>
+</span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/AdUnitTag">&nbsp;&nbsp;AdUnitTag</a></code>
+		<span class="tooltip"><p>设置/获取广告位id</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/isActive">&nbsp;&nbsp;isActive</a></code>
+		<span class="tooltip"><p>当前广告位是否处于活跃（即展示）状态。
+BaiduMobAdView实例化并调用start之后会处于展示状态, isActive为YES。 当其他的[BaiduMobAdView]实例产生并[BaiduMobAdView start]以后，本实例的状态为等待，<a href="#//api/name/isActive">[BaiduMobAdView isActive]</a>属性为NO</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/Version">&nbsp;&nbsp;Version</a></code>
+		<span class="tooltip"><p>SDK版本</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/start">&ndash;&nbsp;start</a></code>
+		<span class="tooltip"><ul>
+<li>开始广告展示请求,会触发所有资源的重新加载，推荐初始化以后调用一次</li>
+<li>会驱动一次广告展示，回调函数willDisplayAd或者failedDisplayAd中调用<a href="#//api/name/request">[BaiduMobAdView request]</a>接口请求一次广告展示</li>
+</ul>
+</span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/request">&ndash;&nbsp;request</a></code>
+		<span class="tooltip"><ul>
+<li>高级接口</li>
+<li>请求广告展示，在<a href="#//api/name/autoplayEnabled">[BaiduMobAdView autoplayEnabled]</a>设置为NO时使用。</li>
+</ul>
+</span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/AdType" title="AdType"></a>
+	<h3 class="subsubtitle method-title">AdType</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>广告类型</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BaiduMobAdViewType AdType</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>广告类型</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/AdUnitTag" title="AdUnitTag"></a>
+	<h3 class="subsubtitle method-title">AdUnitTag</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>设置/获取广告位id</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, copy) NSString *AdUnitTag</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>设置/获取广告位id</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/Version" title="Version"></a>
+	<h3 class="subsubtitle method-title">Version</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>SDK版本</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) NSString *Version</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>SDK版本</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/autoplayEnabled" title="autoplayEnabled"></a>
+	<h3 class="subsubtitle method-title">autoplayEnabled</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<ul>
+<li>设置是否需要启动SDK的自动轮播机制</li>
+<li>autoplayEnabled设置为YES（默认值）时，SDK会自动根据一定的时间间隔播放不同的广告。开发者无须编写额外的代码控制广告的更新和展示。request接口不可用</li>
+<li>autoplayEnabled设置为NO（默认值）时，SDK不会主动调用第一个广告的展示，并产生回调函数 <a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/willDisplayAd:">[BaiduMobAdViewDelegate willDisplayAd:]</a>或者<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/failedDisplayAd:">[BaiduMobAdViewDelegate failedDisplayAd:]</a>,
+开发者需要在回调函数<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/willDisplayAd:">[BaiduMobAdViewDelegate willDisplayAd:]</a>或者<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/failedDisplayAd:">[BaiduMobAdViewDelegate failedDisplayAd:]</a>中调用request接口请求一次广告展示</li>
+</ul>
+
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic) BOOL autoplayEnabled</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<ul>
+<li>设置是否需要启动SDK的自动轮播机制</li>
+<li>autoplayEnabled设置为YES（默认值）时，SDK会自动根据一定的时间间隔播放不同的广告。开发者无须编写额外的代码控制广告的更新和展示。request接口不可用</li>
+<li>autoplayEnabled设置为NO（默认值）时，SDK不会主动调用第一个广告的展示，并产生回调函数 <a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/willDisplayAd:">[BaiduMobAdViewDelegate willDisplayAd:]</a>或者<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/failedDisplayAd:">[BaiduMobAdViewDelegate failedDisplayAd:]</a>,
+开发者需要在回调函数<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/willDisplayAd:">[BaiduMobAdViewDelegate willDisplayAd:]</a>或者<a href="../Protocols/BaiduMobAdViewDelegate.html#//api/name/failedDisplayAd:">[BaiduMobAdViewDelegate failedDisplayAd:]</a>中调用request接口请求一次广告展示</li>
+</ul>
+
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/delegate" title="delegate"></a>
+	<h3 class="subsubtitle method-title">delegate</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>委托对象</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, assign) id&lt;&gt; delegate</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>委托对象</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/isActive" title="isActive"></a>
+	<h3 class="subsubtitle method-title">isActive</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>当前广告位是否处于活跃（即展示）状态。
+BaiduMobAdView实例化并调用start之后会处于展示状态, isActive为YES。 当其他的[BaiduMobAdView]实例产生并[BaiduMobAdView start]以后，本实例的状态为等待，<a href="#//api/name/isActive">[BaiduMobAdView isActive]</a>属性为NO</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, readonly) BOOL isActive</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>当前广告位是否处于活跃（即展示）状态。
+BaiduMobAdView实例化并调用start之后会处于展示状态, isActive为YES。 当其他的[BaiduMobAdView]实例产生并[BaiduMobAdView start]以后，本实例的状态为等待，<a href="#//api/name/isActive">[BaiduMobAdView isActive]</a>属性为NO</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/textColor" title="textColor"></a>
+	<h3 class="subsubtitle method-title">textColor</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>设置／获取当前广告（文字）的文本颜色</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (nonatomic, retain) UIColor *textColor</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>设置／获取当前广告（文字）的文本颜色</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/request" title="request"></a>
+	<h3 class="subsubtitle method-title">request</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<ul>
+<li>高级接口</li>
+<li>请求广告展示，在<a href="#//api/name/autoplayEnabled">[BaiduMobAdView autoplayEnabled]</a>设置为NO时使用。</li>
+</ul>
+
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)request</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<ul>
+<li>高级接口</li>
+<li>请求广告展示，在<a href="#//api/name/autoplayEnabled">[BaiduMobAdView autoplayEnabled]</a>设置为NO时使用。</li>
+</ul>
+
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/start" title="start"></a>
+	<h3 class="subsubtitle method-title">start</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<ul>
+<li>开始广告展示请求,会触发所有资源的重新加载，推荐初始化以后调用一次</li>
+<li>会驱动一次广告展示，回调函数willDisplayAd或者failedDisplayAd中调用<a href="#//api/name/request">[BaiduMobAdView request]</a>接口请求一次广告展示</li>
+</ul>
+
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)start</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<ul>
+<li>开始广告展示请求,会触发所有资源的重新加载，推荐初始化以后调用一次</li>
+<li>会驱动一次广告展示，回调函数willDisplayAd或者failedDisplayAd中调用<a href="#//api/name/request">[BaiduMobAdView request]</a>接口请求一次广告展示</li>
+</ul>
+
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdView.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 Baidu. All rights reserved. (Last updated: 2013-03-26)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 789)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
+		</script>
+	</body>
+</html>

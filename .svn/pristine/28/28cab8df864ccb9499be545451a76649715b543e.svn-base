@@ -1,0 +1,2289 @@
+//
+//  GameScene.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "GameScene.h"
+#import "MenuMainScene.h"
+#import "HelpScene.h"
+#import "SettingScene.h"
+#import "SelectScene.h"
+
+#import "GameDefine.h"
+
+#import "Bullet.h"
+#import "Net.h"
+#import "Fish.h"
+#import "Money.h"
+#import "Laser.h"
+
+@implementation GameScene
+
+static int gameLevels[] = {100 * 3, 200* 3, 400* 3, 700* 3, 1200* 3,
+	1800 * 3, 3000* 3, 4500* 3, 6300* 3, 10000* 3};
+
+static NSString *gameLevelName[] = {
+	@"新手上路", @"江湖小虾", @"明日之星", @"捕鱼能手", @"海上霸主",
+	@"隐士高手", @"绝世奇才", @"捕鱼高人", @"捕鱼大师", @"捕鱼达人", @"天下无敌"
+};
+
+
+@synthesize g_cntGameMoney;
+@synthesize g_cntGameLineupStage;
+@synthesize g_cntGameSp;
+@synthesize g_cntGameExp;
+
+//单例
+static GameScene *instance;
++ (id)sharedGameScene
+{	
+	NSAssert(instance != nil, @"instance is not yet init");
+	return instance;
+}
+
++ (id)scene
+{
+	CCScene *scene = [CCScene node];
+    GameScene *layer = [GameScene node];
+    [scene addChild:layer];
+	return scene;
+}
+
+
+- (id)init
+{
+	if ((self = [super init])) {
+		//数据
+		[self readInfo];
+		
+        if (g_hasSound) {
+            [[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+            [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"game.mp3"];
+        }
+        
+        //g_cntGameMoney = 500;
+		//[self saveDemo];
+		m_cntGameTime = 1200;
+		for (int i = 0; i < 10; i ++) {
+			if (m_cntGameLevel < 10) {
+				if (g_cntGameExp > gameLevels[m_cntGameLevel]) {
+					m_cntGameLevel++;
+				}
+			}
+		}
+		
+		//背景
+        m_spGameSceneBg = [CCSprite spriteWithFile:@"gamescene1.png"];
+		m_spGameSceneBg.position = ccp(0, 0);
+		m_spGameSceneBg.anchorPoint = ccp(0, 0);
+		[self addChild:m_spGameSceneBg z:-2];
+        
+        m_spGameSceneBg_ = [CCSprite spriteWithFile:@"gamescene2.png"];
+		m_spGameSceneBg_.position = ccp(0, 0);
+		m_spGameSceneBg_.anchorPoint = ccp(0, 0);
+        m_spGameSceneBg_.visible =  g_isDoubleScore;
+		[self addChild:m_spGameSceneBg_ z:-1];
+		
+		//鱼
+		m_spbnFishs0 = [CCSpriteBatchNode batchNodeWithFile:@"fish0.png"];
+		for (int i = 0; i < 30; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish0.png"];
+			[fish initData:0];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs0 addChild:fish];
+		}
+		[self addChild:m_spbnFishs0];
+		
+		m_spbnFishs1 = [CCSpriteBatchNode batchNodeWithFile:@"fish1.png"];
+		for (int i = 0; i < 30; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish1.png"];
+			[fish initData:1];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs1 addChild:fish];
+		}
+		[self addChild:m_spbnFishs1];
+		
+		m_spbnFishs2 = [CCSpriteBatchNode batchNodeWithFile:@"fish2.png"];
+		for (int i = 0; i < 30; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish2.png"];
+			[fish initData:2];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs2 addChild:fish];
+		}
+		[self addChild:m_spbnFishs2];
+		
+		m_spbnFishs3 = [CCSpriteBatchNode batchNodeWithFile:@"fish3.png"];
+		for (int i = 0; i < 30; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish3.png"];
+			[fish initData:3];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs3 addChild:fish];
+		}
+		[self addChild:m_spbnFishs3];
+		
+		m_spbnFishs4 = [CCSpriteBatchNode batchNodeWithFile:@"fish4.png"];
+		for (int i = 0; i < 30; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish4.png"];
+			[fish initData:4];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs4 addChild:fish];
+		}
+		[self addChild:m_spbnFishs4];
+		
+		m_spbnFishs5 = [CCSpriteBatchNode batchNodeWithFile:@"fish5.png"];
+		for (int i = 0; i < 2; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish5.png"];
+			[fish initData:5];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs5 addChild:fish];
+		}
+		[self addChild:m_spbnFishs5];
+		
+		m_spbnFishs6 = [CCSpriteBatchNode batchNodeWithFile:@"fish6.png"];
+		for (int i = 0; i < 2; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish6.png"];
+			[fish initData:6];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs6 addChild:fish];
+		}
+		[self addChild:m_spbnFishs6];
+		
+		m_spbnFishs7 = [CCSpriteBatchNode batchNodeWithFile:@"fish7.png"];
+		for (int i = 0; i < 2; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish7.png"];
+			[fish initData:7];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs7 addChild:fish];
+		}
+		[self addChild:m_spbnFishs7];
+		
+		m_spbnFishs8 = [CCSpriteBatchNode batchNodeWithFile:@"fish8.png"];
+		for (int i = 0; i < 2; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish8.png"];
+			[fish initData:8];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs8 addChild:fish];
+		}
+		[self addChild:m_spbnFishs8];
+		
+		m_spbnFishs9 = [CCSpriteBatchNode batchNodeWithFile:@"fish9.png"];
+		for (int i = 0; i < 1; i ++) {
+			Fish *fish = [Fish spriteWithFile:@"fish9.png"];
+			[fish initData:9];
+			fish.visible = NO;
+			fish.state = STATE_READY;
+			[m_spbnFishs9 addChild:fish];
+		}
+		[self addChild:m_spbnFishs9];
+		
+		//子弹
+		m_spbnBullets = [CCSpriteBatchNode batchNodeWithFile:@"bullet6.png"];
+		for (int i = 0; i < 30; i ++) {
+			Bullet *bullet = [Bullet spriteWithFile:@"bullet6.png"];
+			bullet.visible = NO;
+			[m_spbnBullets addChild:bullet];
+		}
+		[self addChild:m_spbnBullets];
+		
+		//鱼网
+		m_spbnFishnets = [CCSpriteBatchNode batchNodeWithFile:@"fishnet.png"];
+		for (int i = 0; i < 30; i ++) {
+			Net *net = [Net spriteWithFile:@"fishnet.png"];
+			net.visible = NO;
+            [net initData:0];
+			[m_spbnFishnets addChild:net];
+		}
+		[self addChild:m_spbnFishnets];
+		
+		
+		if (g_isIpad) {
+            //上部分ＵＩ
+            m_spGameInfoBox = [CCSprite spriteWithFile:@"game_inforbox.png"];
+            m_spGameInfoBox.position = ccp(g_sceneSize.width/2, g_sceneSize.height + 43);
+            m_spGameInfoBox.anchorPoint = ccp(0.5, 1);
+            [self addChild:m_spGameInfoBox];
+            
+            m_pgGameExpBar = [CCProgressTimer progressWithSprite:[CCSprite spriteWithFile:@"game_exp.png"]]; 
+            m_pgGameExpBar.position=ccp(g_sceneSize.width /2 - 105 , g_sceneSize.height - 102); 
+            m_pgGameExpBar.percentage = 0;
+            m_pgGameExpBar.type=kCCProgressTimerTypeRadial;	
+            [self addChild:m_pgGameExpBar];
+            
+            
+            m_labelGameLevelNum = [CCLabelAtlas labelWithString:@"0" charMapFile:@"game_level_num.png" itemWidth:32 itemHeight:39 startCharMap:'0'];
+            m_labelGameLevelNum.anchorPoint = ccp(0.5, 0.5);
+            m_labelGameLevelNum.position = ccp(g_sceneSize.width / 2 - 105, g_sceneSize.height - 100);
+            [self addChild:m_labelGameLevelNum];
+            
+            m_spGameLevel = [CCSprite spriteWithFile:@"game_level.png"];
+            m_sizeGameLevel = [m_spGameLevel contentSize];
+            m_spGameLevel.position = ccp(g_sceneSize.width / 2 + 55, g_sceneSize.height - 80);
+            m_spGameLevel.anchorPoint = ccp(0.5, 1);
+            [m_spGameLevel setTextureRect:CGRectMake(0, 0, 160, 38)];
+            [self addChild:m_spGameLevel];
+            
+            CCMenuItem *menuItemPhone = [CCMenuItemImage itemWithNormalImage:@"game_photo.png" 														  selectedImage:@"game_photo.png" target:self selector:@selector(onPhoto)];
+            menuItemPhone.position = ccp(0, 20);
+            menuItemPhone.anchorPoint = ccp(0, 1);		
+            CCMenuItem *menuItemPause = [CCMenuItemImage itemWithNormalImage:@"game_pause.png" 
+                                                               selectedImage:@"game_pause.png" target:self selector:@selector(onPause)];
+            menuItemPause.position = ccp(g_sceneSize.width, 0);
+            menuItemPause.anchorPoint = ccp(1, 1);
+            
+            m_menuUiHead = [CCMenu menuWithItems:menuItemPhone, menuItemPause,nil];
+            m_menuUiHead.position = ccp(0, g_sceneSize.height);
+            m_menuUiHead.anchorPoint = ccp(0, 0);
+            [self addChild:m_menuUiHead];
+            
+            //下部分ＵＩ
+            m_spGameCannonBg = [CCSprite spriteWithFile:@"game_cannon_bg.png"];
+            m_spGameCannonBg.position = ccp(0, 0);
+            m_spGameCannonBg.anchorPoint = ccp(0, 0);
+            [self addChild:m_spGameCannonBg];
+            
+            m_spGameSp = [CCSprite spriteWithFile:@"game_sp.png"];
+            m_spGameSp.anchorPoint = ccp(0, 0); 
+            m_spGameSp.position = ccp(g_sceneSize.width - [m_spGameSp contentSize].width - 13.5, 15);
+            [m_spGameSp setTextureRect:CGRectMake(0, 0, 0, [m_spGameSp contentSize].height)];
+            [self addChild:m_spGameSp];
+            
+            m_spGameMoneyIcon = [CCSprite spriteWithFile:@"game_money_icon_.png"];
+            m_spGameMoneyIcon.anchorPoint = ccp(0, 0);
+            m_spGameMoneyIcon.position = ccp(18, 15);
+            [self addChild:m_spGameMoneyIcon];
+            
+            m_labelGameMoneyNum = [CCLabelAtlas labelWithString:@"500" charMapFile:@"game_money_num.png" itemWidth:32 itemHeight:31 startCharMap:'0' ];
+            m_labelGameMoneyNum.anchorPoint = ccp(1, 0);
+            m_labelGameMoneyNum.position = ccp(288, 15);
+            [self addChild:m_labelGameMoneyNum];
+            
+            m_labelGameMoneyTimeNum = [CCLabelAtlas labelWithString:@"60" charMapFile:@"game_time_num.png" itemWidth:26 itemHeight:31 startCharMap:'0' ];
+            m_labelGameMoneyTimeNum.anchorPoint = ccp(1, 0);
+            m_labelGameMoneyTimeNum.position = ccp(172, 75);
+            [self addChild:m_labelGameMoneyTimeNum];
+            
+            m_spGameCannonUp = [CCSprite spriteWithFile:@"game_cannon_up.png"];					
+            m_spGameCannonUp.position = ccp(0,5);
+            m_spGameCannonUp.anchorPoint = ccp (0.5, 0);
+            m_spGameCannonDown = [CCSprite spriteWithFile:@"game_cannon_down.png"];
+            m_spGameCannonDown.position = ccp(0, -53);
+            m_spGameCannonDown.anchorPoint = ccp(0.5, 0);
+            m_spGameCannonLevel = [CCSprite spriteWithFile:@"game_cannon_level_num.png"];
+            [m_spGameCannonLevel setTextureRect:CGRectMake(0, 0, 22, 26)];
+            m_spGameCannonLevel.position = ccp(0, 0); 
+            m_spGameCannon = [CCSprite node];
+            [m_spGameCannon addChild:m_spGameCannonUp];
+            [m_spGameCannon addChild:m_spGameCannonDown];
+            [m_spGameCannon addChild:m_spGameCannonLevel];
+            m_spGameCannon.position = ccp(g_sceneSize.width/2, 30);
+            m_spGameCannon.anchorPoint = ccp(0.5, 0);
+            [self addChild:m_spGameCannon];
+            
+            
+            m_spGameCannonAdd = [CCSprite spriteWithFile:@"game_cannon_add.png" rect:CGRectMake(0, 0, 47, 47)];
+            m_spGameCannonAdd_ = [CCSprite spriteWithFile:@"game_cannon_add.png" rect:CGRectMake(47, 0, 47, 47)];
+            m_spGameCannonDec = [CCSprite spriteWithFile:@"game_cannon_dec.png" rect:CGRectMake(0, 0, 47, 47)];
+            m_spGameCannonDec_ = [CCSprite spriteWithFile:@"game_cannon_dec.png" rect:CGRectMake(47, 0, 47, 47)];
+            CCMenuItem *menuItemCannonAdd = [CCMenuItemSprite itemWithNormalSprite:m_spGameCannonAdd selectedSprite:m_spGameCannonAdd_ target:self selector:@selector(onAddCannonLV)];
+            menuItemCannonAdd.position = ccp(-100, 15);
+            CCMenuItem *menuItemCannonDec = [CCMenuItemSprite itemWithNormalSprite: m_spGameCannonDec selectedSprite:m_spGameCannonDec_ target:self selector:@selector(onDecCannonLV)];
+            menuItemCannonDec.position = ccp(120, 15);
+            m_menuCannonControl = [CCMenu menuWithItems:menuItemCannonAdd, menuItemCannonDec, nil];
+            m_menuCannonControl.position = ccp(g_sceneSize.width/2, 12);
+            [self addChild:m_menuCannonControl];     
+        } else {
+            
+            //上部分ＵＩ
+            m_spGameInfoBox = [CCSprite spriteWithFile:@"game_inforbox.png"];
+            m_spGameInfoBox.position = ccp(g_sceneSize.width/2, g_sceneSize.height + 33);
+            m_spGameInfoBox.anchorPoint = ccp(0.5, 1);
+            [self addChild:m_spGameInfoBox];
+            
+            m_pgGameExpBar = [CCProgressTimer progressWithSprite:[CCSprite spriteWithFile:@"game_exp.png"]]; 
+            m_pgGameExpBar.position=ccp(g_sceneSize.width /2 - 50 , g_sceneSize.height - 34); 
+            m_pgGameExpBar.percentage = 0;
+            m_pgGameExpBar.type=kCCProgressTimerTypeRadial;	
+            [self addChild:m_pgGameExpBar];
+            
+            
+            m_labelGameLevelNum = [CCLabelAtlas labelWithString:@"3" charMapFile:@"game_level_num.png" itemWidth:16 itemHeight:18 startCharMap:'0' ];
+            m_labelGameLevelNum.anchorPoint = ccp(0.5, 0.5);
+            m_labelGameLevelNum.position = ccp(g_sceneSize.width / 2 - 48, g_sceneSize.height - 35);
+            [self addChild:m_labelGameLevelNum];
+            
+            m_spGameLevel = [CCSprite spriteWithFile:@"game_level.png"];
+            m_sizeGameLevel = [m_spGameLevel contentSize];
+            m_spGameLevel.position = ccp(g_sceneSize.width / 2 + 30, g_sceneSize.height - 25);
+            m_spGameLevel.anchorPoint = ccp(0.5, 1);
+            [m_spGameLevel setTextureRect:CGRectMake(0, 18 * 3, 75, 18)];
+            [self addChild:m_spGameLevel];
+            
+            CCMenuItem *menuItemPhone = [CCMenuItemImage itemWithNormalImage:@"game_photo.png" 														  selectedImage:@"game_photo.png" target:self selector:@selector(onPhoto)];
+            menuItemPhone.position = ccp(0, 20);
+            menuItemPhone.anchorPoint = ccp(0, 1);		
+            CCMenuItem *menuItemPause = [CCMenuItemImage itemWithNormalImage:@"game_pause.png" 
+                                                               selectedImage:@"game_pause.png" target:self selector:@selector(onPause)];
+            menuItemPause.position = ccp(g_sceneSize.width, 0);
+            menuItemPause.anchorPoint = ccp(1, 1);
+            
+            m_menuUiHead = [CCMenu menuWithItems:menuItemPhone, menuItemPause,nil];
+            m_menuUiHead.position = ccp(0, g_sceneSize.height);
+            m_menuUiHead.anchorPoint = ccp(0, 0);
+            [self addChild:m_menuUiHead];
+            
+            //下部分ＵＩ
+            m_spGameCannonBg = [CCSprite spriteWithFile:@"game_cannon_bg.png"];
+            m_spGameCannonBg.position = ccp(0, 0);
+            m_spGameCannonBg.anchorPoint = ccp(0, 0);
+            [self addChild:m_spGameCannonBg];
+            
+            m_spGameSp = [CCSprite spriteWithFile:@"game_sp.png"];
+            m_spGameSp.anchorPoint = ccp(0, 0); 
+            m_spGameSp.position = ccp(g_sceneSize.width - [m_spGameSp contentSize].width - 7.5, 7);
+            [m_spGameSp setTextureRect:CGRectMake(0, 0, g_cntGameSp * 1000 / ([m_spGameSp contentSize].width), [m_spGameSp contentSize].height)];
+            [self addChild:m_spGameSp];
+            
+            m_spGameMoneyIcon = [CCSprite spriteWithFile:@"game_money_icon_.png"];
+            m_spGameMoneyIcon.anchorPoint = ccp(0, 0);
+            m_spGameMoneyIcon.position = ccp(8, 5);
+            [self addChild:m_spGameMoneyIcon];
+            
+            m_labelGameMoneyNum = [CCLabelAtlas labelWithString:@"500" charMapFile:@"game_money_num.png" itemWidth:15 itemHeight:17 startCharMap:'0' ];
+            m_labelGameMoneyNum.anchorPoint = ccp(1, 0);
+            m_labelGameMoneyNum.position = ccp(133, 5);
+            [self addChild:m_labelGameMoneyNum];
+            
+            m_labelGameMoneyTimeNum = [CCLabelAtlas labelWithString:@"60" charMapFile:@"game_time_num.png" itemWidth:14 itemHeight:15 startCharMap:'0' ];
+            m_labelGameMoneyTimeNum.anchorPoint = ccp(1, 0);
+            m_labelGameMoneyTimeNum.position = ccp(82, 35);
+            [self addChild:m_labelGameMoneyTimeNum];
+            
+            m_spGameCannonUp = [CCSprite spriteWithFile:@"game_cannon_up.png"];					
+            m_spGameCannonUp.position = ccp(0,5);
+            m_spGameCannonUp.anchorPoint = ccp (0.5, 0);
+            m_spGameCannonDown = [CCSprite spriteWithFile:@"game_cannon_down.png"];
+            m_spGameCannonDown.position = ccp(0, -27);
+            m_spGameCannonDown.anchorPoint = ccp(0.5, 0);
+            m_spGameCannonLevel = [CCSprite spriteWithFile:@"game_cannon_level_num.png"];
+            [m_spGameCannonLevel setTextureRect:CGRectMake(0, 0, 7, 12)];
+            m_spGameCannonLevel.position = ccp(0, 0); 
+            m_spGameCannon = [CCSprite node];
+            [m_spGameCannon addChild:m_spGameCannonUp];
+            [m_spGameCannon addChild:m_spGameCannonDown];
+            [m_spGameCannon addChild:m_spGameCannonLevel];
+            m_spGameCannon.position = ccp(g_sceneSize.width/2, 10);
+            m_spGameCannon.anchorPoint = ccp(0.5, 0);
+            [self addChild:m_spGameCannon];
+            
+            
+            m_spGameCannonAdd = [CCSprite spriteWithFile:@"game_cannon_add.png" rect:CGRectMake(0, 0, 22, 22)];
+            m_spGameCannonAdd_ = [CCSprite spriteWithFile:@"game_cannon_add.png" rect:CGRectMake(22, 0, 22, 22)];
+            m_spGameCannonDec = [CCSprite spriteWithFile:@"game_cannon_dec.png" rect:CGRectMake(0, 0, 22, 22)];
+            m_spGameCannonDec_ = [CCSprite spriteWithFile:@"game_cannon_dec.png" rect:CGRectMake(22, 0, 22, 22)];
+            CCMenuItem *menuItemCannonAdd = [CCMenuItemSprite itemWithNormalSprite:m_spGameCannonAdd selectedSprite:m_spGameCannonAdd_ target:self selector:@selector(onAddCannonLV)];
+            menuItemCannonAdd.position = ccp(-48, 0);
+            CCMenuItem *menuItemCannonDec = [CCMenuItemSprite itemWithNormalSprite: m_spGameCannonDec selectedSprite:m_spGameCannonDec_ target:self selector:@selector(onDecCannonLV)];
+            menuItemCannonDec.position = ccp(55, 0);
+            m_menuCannonControl = [CCMenu menuWithItems:menuItemCannonAdd, menuItemCannonDec, nil];
+            m_menuCannonControl.position = ccp(g_sceneSize.width/2, 12);
+            [self addChild:m_menuCannonControl];
+        }
+		
+		
+		//金币效果
+		m_spbnMoneys = [CCSpriteBatchNode batchNodeWithFile:@"game_money_icon.png"];
+		for (int i = 0; i < 30; i ++) {
+			Money *money = [Money spriteWithFile:@"game_money_icon.png"];
+			money.visible = NO;
+			[money initData];
+			[m_spbnMoneys addChild:money];
+		}
+		[self addChild:m_spbnMoneys];
+		
+		//游戏菜单
+        
+        CCMenuItem *menuItems[4];
+        if (g_isIpad) {
+            for (int i = 0; i < 4; i ++) {
+                //CCSprite *spMenuItem = [CCSprite node];
+                CCSprite *spMenuItemBg = [CCSprite spriteWithFile:@"menugame_btn_bg.png" rect:CGRectMake(0, 0, 347, 100)];
+                CCSprite *spMenuItemWord = [CCSprite spriteWithFile:@"menugame_btn_word.png" rect:CGRectMake(0, 69 * (3 - i), 258, 69)];
+                spMenuItemWord.position = ccp(174, 50);
+                [spMenuItemBg addChild:spMenuItemWord];
+                
+                //[spMenuItem addChild:spMenuItemBg];
+                //[spMenuItem addChild:spMenuItemWord];
+                
+                //CCSprite *spMenuItem_ = [CCSprite node];
+                CCSprite *spMenuItemBg_ = [CCSprite spriteWithFile:@"menugame_btn_bg.png" rect:CGRectMake(347, 0, 347, 100)];
+                CCSprite *spMenuItemWord_ = [CCSprite spriteWithFile:@"menugame_btn_word.png" rect:CGRectMake(258, 69* (3 - i), 258, 69)];
+                spMenuItemWord_.position = ccp(174, 50);
+                [spMenuItemBg_ addChild:spMenuItemWord_];
+                
+                //[spMenuItem_ addChild:spMenuItemBg_];
+                //[spMenuItem_ addChild:spMenuItemWord_];
+                
+                switch (i) {
+                    case 0:
+                        menuItems[i] = [CCMenuItemSprite itemWithNormalSprite:spMenuItemBg selectedSprite:spMenuItemBg_ target:self selector:@selector(onMenuMain)];
+                        break;
+                    case 1:
+                        menuItems[i] = [CCMenuItemSprite itemWithNormalSprite:spMenuItemBg selectedSprite:spMenuItemBg_ target:self selector:@selector(onSetting)];
+                        break;
+                    case 2:
+                        menuItems[i] = [CCMenuItemSprite itemWithNormalSprite:spMenuItemBg selectedSprite:spMenuItemBg_ target:self selector:@selector(onSelect)];
+                        break;
+                    case 3:
+                        menuItems[i] = [CCMenuItemSprite itemWithNormalSprite:spMenuItemBg selectedSprite:spMenuItemBg_ target:self selector:@selector(onContinue)];
+                        break;
+                    default:
+                        break;
+                }
+                menuItems[i].position = ccp(0, (i - 2) * 100);
+            }
+        } else {
+            for (int i = 0; i < 4; i ++) {
+                //CCSprite *spMenuItem = [CCSprite node];
+                CCSprite *spMenuItemBg = [CCSprite spriteWithFile:@"menugame_btn_bg.png" rect:CGRectMake(0, 0, 164, 47)];
+                CCSprite *spMenuItemWord = [CCSprite spriteWithFile:@"menugame_btn_word.png" rect:CGRectMake(0, 33 * (3 - i), 121, 33)];
+                spMenuItemWord.position = ccp(82, 22);
+                [spMenuItemBg addChild:spMenuItemWord];
+                
+                CCSprite *spMenuItemBg_ = [CCSprite spriteWithFile:@"menugame_btn_bg.png" rect:CGRectMake(165, 0, 164, 47)];
+                CCSprite *spMenuItemWord_ = [CCSprite spriteWithFile:@"menugame_btn_word.png" rect:CGRectMake(122, 33* (3 - i), 121, 33)];
+                spMenuItemWord_.position = ccp(82, 22);
+                [spMenuItemBg_ addChild:spMenuItemWord_];
+                
+                //[spMenuItem_ addChild:spMenuItemBg_];
+                //[spMenuItem_ addChild:spMenuItemWord_];
+                
+                switch (i) {
+                    case 0:
+                        menuItems[i] = [CCMenuItemSprite itemWithNormalSprite:spMenuItemBg selectedSprite:spMenuItemBg_ target:self selector:@selector(onMenuMain)];
+                        break;
+                    case 1:
+                        menuItems[i] = [CCMenuItemSprite itemWithNormalSprite:spMenuItemBg selectedSprite:spMenuItemBg_ target:self selector:@selector(onSetting)];
+                        break;
+                    case 2:
+                        menuItems[i] = [CCMenuItemSprite itemWithNormalSprite:spMenuItemBg selectedSprite:spMenuItemBg_ target:self selector:@selector(onSelect)];
+                        break;
+                    case 3:
+                        menuItems[i] = [CCMenuItemSprite itemWithNormalSprite:spMenuItemBg selectedSprite:spMenuItemBg_ target:self selector:@selector(onContinue)];
+                        break;
+                    default:
+                        break;
+                }
+                menuItems[i].position = ccp(0, (i - 2) * 47);
+            }
+        }
+        
+        
+        m_menuGame = [CCMenu menuWithItems:menuItems[0], menuItems[1], menuItems[2], menuItems[3] , nil];
+		m_menuGame.position = ccp(g_sceneSize.width / 2, g_sceneSize.height / 2 + 20);
+		m_menuGame.visible = NO;
+        [self addChild:m_menuGame];
+		
+		//激光提示
+		m_spGameLaserTip = [CCSprite spriteWithFile:@"game_laser_tip.png"];
+		m_spGameLaserTip.position = ccp(g_sceneSize.width / 2, g_sceneSize.height / 2);
+		m_spGameLaserTip.visible = NO;
+		[self addChild: m_spGameLaserTip];
+		
+		//升级提示
+		m_spGameLevelUpTip = [CCSprite spriteWithFile:@"com_box_bg.png"];
+		m_spGameLevelUpTip.anchorPoint = ccp(0.5, 0);
+		m_spGameLevelUpTip.position = ccp(g_sceneSize.width / 2, g_sceneSize.height);
+		
+		NSString *strLevelUpTip = @"恭喜您已荣升为 《天下无敌》，您获得了10金币的奖励。继续努力，后面还有更多的惊喜等着您去发现！加油！";
+		m_labelGameLevelTip = [[CCLabelTTF labelWithString:strLevelUpTip 
+												dimensions:CGSizeMake(240, 200) alignment:UITextAlignmentLeft
+												  fontName:@"Arial" fontSize:16] retain];
+		m_labelGameLevelTip.position = ccp(167, 40);
+		[m_spGameLevelUpTip addChild:m_labelGameLevelTip];
+		[self addChild:m_spGameLevelUpTip];
+        
+        self.isTouchEnabled = YES;
+		[self schedule:@selector(update:) interval:0.05];
+		instance = self;
+        
+        g_hasInGame = YES;
+        
+	}
+	return self;
+}
+
+
+
+- (void)update:(ccTime)dt {	
+	//更新UI
+	[self updateUI];
+	
+	//更新鱼
+	[self updateFishes];
+	
+	//更新子弹
+	[self updateBullets];
+	
+	//更新鱼网
+	[self updateNets];
+	
+	//更新金币
+	[self updateMoneys];
+	
+	//更新金币数字
+	[self updateNums];
+    
+	//更新激光
+	[self updateLaser];
+}
+
+//UI
+- (void)updateUI
+{
+    //背景
+    m_spGameSceneBg_.visible =  g_isDoubleScore;
+	
+    //上部分UI
+	
+    
+	if (m_cntGameLevel < 10) {
+		if (g_cntGameExp > gameLevels[m_cntGameLevel]) {
+			m_cntGameLevel++;
+			g_cntGameMoney += (m_cntGameLevel * 10);
+			[m_spGameLevelUpTip runAction:[CCMoveTo actionWithDuration:1 position:ccp(g_sceneSize.width / 2, g_sceneSize.height / 4)]];
+			m_isGameLevelUP = YES;
+			NSString *strLevelUpTip = [NSString stringWithFormat:@"恭喜您已荣升为《%@》，您获得了%d金币的奖励。继续努力，后面还有更多的惊喜等着您去发现！加油！",gameLevelName[m_cntGameLevel], m_cntGameLevel * 10];
+			[m_labelGameLevelTip setString:strLevelUpTip];
+			//阵型
+			if (m_isGameLineup == NO) {
+				m_isGameLineup = YES;
+				m_cntGameLineupType = random() % 3;
+				NSLog(@"%d", m_cntGameLineupType);
+				//m_cntGameLineupType = 2;
+			}
+		}
+	}
+	if (m_isGameLevelUP == YES) {
+		m_cntGameLevelUp ++;
+		if (m_cntGameLevelUp >= 50) {
+			m_cntGameLevelUp = 0;
+			m_isGameLevelUP = NO;
+			[m_spGameLevelUpTip runAction:[CCMoveTo actionWithDuration:1 position:ccp(g_sceneSize.width / 2, g_sceneSize.height)]];
+		}
+	}
+	
+	if (m_cntGameLevel > 0) {
+		m_pgGameExpBar.percentage = (g_cntGameExp - gameLevels[m_cntGameLevel - 1]) * 100 / (gameLevels[m_cntGameLevel] - gameLevels[m_cntGameLevel - 1]);
+        
+	} else {
+		m_pgGameExpBar.percentage = (g_cntGameExp) * 100 / gameLevels[m_cntGameLevel];
+	}
+    
+    
+	[m_labelGameLevelNum setString:[NSString stringWithFormat:@"%d",m_cntGameLevel]];
+	
+    [m_spGameLevel setTextureRect:CGRectMake(0, m_sizeGameLevel.height / 11 * m_cntGameLevel, m_sizeGameLevel.width, m_sizeGameLevel.height / 11)];
+	
+	
+	//下部分UI	
+	if(m_isGameCannonFiring != NO) {
+		m_cntGameCannonFire ++;
+		if (m_cntGameCannonFire >= 5) {
+			m_isGameCannonFiring = NO;
+			m_cntGameCannonFire = 0;
+		}
+	}
+	
+    
+	[m_labelGameMoneyNum setString:[NSString stringWithFormat:@"%d",g_cntGameMoney ]];
+	
+	if (g_cntGameMoney <= 200) {
+		m_cntGameTime --;
+		if (m_cntGameTime <= 0) {
+			m_cntGameTime = 1200;
+			g_cntGameMoney += 5;
+		}
+	} else {
+		m_cntGameTime = 1200;
+	}
+    
+	
+	[m_labelGameMoneyTimeNum setString:[NSString stringWithFormat:@"%d",m_cntGameTime/ 20]];
+    if (g_isIpad) {
+        [m_spGameSp setTextureRect:CGRectMake(0, 0, g_cntGameSp * 182 / 1000, [m_spGameSp contentSize].height)];
+    } else {
+        [m_spGameSp setTextureRect:CGRectMake(0, 0, g_cntGameSp * 86 / 1000, [m_spGameSp contentSize].height)];
+    }
+	
+	
+	m_cntGameRestore ++;
+	if (m_cntGameRestore >= 60) {
+		m_cntGameRestore = 0;
+		[self saveInfo];
+	}
+    
+}
+
+//鱼
+- (void)updateFishes
+{
+	//一级鱼
+	CCArray* fishs0 = [m_spbnFishs0 children];	
+	int count0 = 0;
+	for (int i = 0; i < 30; i ++) {
+		CCNode* node = [fishs0 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count0 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//二级鱼
+	CCArray* fishs1 = [m_spbnFishs1 children];	
+	int count1 = 0;
+	for (int i = 0; i < 30; i ++) {
+		CCNode* node = [fishs1 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count1 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//三级鱼
+	CCArray* fishs2 = [m_spbnFishs2 children];	
+	int count2 = 0;
+	for (int i = 0; i < 30; i ++) {
+		CCNode* node = [fishs2 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count2 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//四级鱼
+	CCArray* fishs3 = [m_spbnFishs3 children];	
+	int count3 = 0;
+	for (int i = 0; i < 30; i ++) {
+		CCNode* node = [fishs3 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count3 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//五级鱼
+	CCArray* fishs4 = [m_spbnFishs4 children];	
+	int count4 = 0;
+	for (int i = 0; i < 30; i ++) {
+		CCNode* node = [fishs4 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count4 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//六级鱼
+	CCArray* fishs5 = [m_spbnFishs5 children];	
+	int count5 = 0;
+	for (int i = 0; i < 2; i ++) {
+		CCNode* node = [fishs5 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count5 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//七级鱼
+	CCArray* fishs6 = [m_spbnFishs6 children];	
+	int count6 = 0;
+	for (int i = 0; i < 2; i ++) {
+		CCNode* node = [fishs6 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count6 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//八级鱼
+	CCArray* fishs7 = [m_spbnFishs7 children];	
+	int count7 = 0;
+	for (int i = 0; i < 2; i ++) {
+		CCNode* node = [fishs7 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count7 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//九级鱼
+	CCArray* fishs8 = [m_spbnFishs8 children];	
+	int count8 = 0;
+	for (int i = 0; i < 2; i ++) {
+		CCNode* node = [fishs8 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count8 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	//十级鱼
+	CCArray* fishs9 = [m_spbnFishs9 children];	
+	int count9 = 0;
+	for (int i = 0; i < 1; i ++) {
+		CCNode* node = [fishs9 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		[fish update];
+		if (fish.state != STATE_READY) {
+			count9 ++;
+			if (m_isGameLineup == YES) {
+				if (fish.state != STATE_ACTION && fish.state != STATE_CATCHED ) {
+					fish.state = STATE_ACTION;
+				}
+			}
+		}
+	}
+	
+	int count = count0 + count1 + count2 + count3 + count4 + count5 + count6 + count7 + count8 + count9;
+	
+	
+	//正常鱼的数量控制
+	if (count <= 40 && m_isGameLineup == NO) {
+        
+		for (int i = 0; i < 10; i++) {
+			switch (i) {
+				case 0:
+					if (count0 >= 20)
+						continue;
+					break;
+				case 1:
+					if (count1 >= 15)
+						continue;
+					break;
+				case 2:
+					if (count2 >= 10)
+						continue;
+					break;
+				case 3:
+					if (count3 >= 5)
+						continue;
+					break;
+				case 4:
+					if (count4 >= 3)
+						continue;
+					break;
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+					if (count5 >= 2 || count6 >= 2 || count7 >= 2 || count8 >= 2)
+						continue;
+					break;
+				case 9:
+					if (count9 >= 1)
+						continue;
+					break;
+				default:
+					break;
+			}
+			int r = random() % 10;
+			if (r >= i) {
+				[self addFish:i];			
+			}
+		}
+	}
+    
+	//阵型
+	if (m_isGameLineup == YES) {
+        //清屏
+        if (g_cntGameLineupStage == 0) {
+            if (count == 0) {
+                g_cntGameLineupStage = 1;
+            }
+            //生成阵型
+        } else if (g_cntGameLineupStage == 1) {
+            if (m_cntGameLineup % 30 == 0 && m_cntGameLineup <= 360) {
+                switch (m_cntGameLineupType) {
+                    case 0:					
+						[self addFish:4 pos:ccp(0, 40) isLeft:YES];
+						[self addFish:3 pos:ccp(0, -40) isLeft:YES];
+						[self addFish:3 pos:ccp(g_sceneSize.width, -40) isLeft:NO];
+						[self addFish:4 pos:ccp(g_sceneSize.width, 40) isLeft:NO];         
+                        break;
+                    case 1:
+						[self addFish:2 pos:ccp(0, g_sceneSize.height * 3 / 4) isLeft:YES];
+						if (m_cntGameLineup % 60 == 0 ) {
+							[self addFish:4 pos:ccp(0, g_sceneSize.height / 2) isLeft:YES];
+							[self addFish:4 pos:ccp(g_sceneSize.width, g_sceneSize.height / 2) isLeft:NO];
+						}
+						
+						[self addFish:2 pos:ccp(0, g_sceneSize.height / 4) isLeft:YES];
+						[self addFish:2 pos:ccp(g_sceneSize.width, g_sceneSize.height * 3 / 4) isLeft:NO];
+						
+						[self addFish:2 pos:ccp(g_sceneSize.width, g_sceneSize.height / 4) isLeft:NO];
+                        break;
+                    case 2:
+						if (m_cntGameLineup == 0) {
+							[self addFish:8 pos:ccp(g_sceneSize.width * 3 / 8, g_sceneSize.height) isLeft:YES];
+							[self addFish:8 pos:ccp(g_sceneSize.width * 5 / 8, g_sceneSize.height) isLeft:NO];
+						} else {
+							[self addFish:2 pos:ccp(g_sceneSize.width * 5 / 16, g_sceneSize.height) isLeft:YES];
+							[self addFish:4 pos:ccp(g_sceneSize.width * 7 / 16, g_sceneSize.height) isLeft:YES];
+							[self addFish:4 pos:ccp(g_sceneSize.width * 9 / 16, g_sceneSize.height) isLeft:NO];
+							[self addFish:2 pos:ccp(g_sceneSize.width * 11 / 16, g_sceneSize.height) isLeft:NO];
+						}
+                        break;
+                    default:
+                        break;
+                }
+            }
+			m_cntGameLineup ++;
+        }		
+		
+		//结束阵型
+		if (count == 0 && m_cntGameLineup >= 400) {
+			m_cntGameLineup = 0;
+			g_cntGameLineupStage = 0;
+			m_isGameLineup = NO;			
+		}
+		
+        
+	}
+}
+
+- (void)addFish:(int)type
+{
+	CCArray* fishs;
+	switch (type) {
+		case 0:
+			fishs = [m_spbnFishs0 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+                    [fish randonPosition];
+					fish.visible = true;
+					return;
+				}
+			}
+			break;
+		case 1:
+			fishs = [m_spbnFishs1 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+                    [fish randonPosition];
+					fish.visible = true;
+					return;
+				}
+			}
+			break;
+		case 2:
+			fishs = [m_spbnFishs2 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+                    [fish randonPosition];
+					fish.visible = true;
+					return;
+				}
+			}
+			break;
+		case 3:
+			fishs = [m_spbnFishs3 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+                    [fish randonPosition];
+					fish.visible = true;
+					return;
+				}
+			}
+			break;
+		case 4:
+			fishs = [m_spbnFishs4 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+					fish.state = STATE_SWIMMING;
+					fish.visible = true;
+					[fish randonPosition];
+					return;
+				}
+			}
+			break;
+		case 5:
+			fishs = [m_spbnFishs5 children];
+			for (int i = 0; i < 2; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+                    [fish randonPosition];
+					fish.visible = true;
+					return;
+				}
+			}
+			break;
+		case 6:
+			fishs = [m_spbnFishs6 children];
+			for (int i = 0; i < 2; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+                    [fish randonPosition];
+					fish.visible = true;
+					return;
+				}
+			}
+			break;
+		case 7:
+			fishs = [m_spbnFishs7 children];
+			for (int i = 0; i < 2; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+                    [fish randonPosition];
+					fish.visible = true;
+					return;
+				}
+			}
+			break;
+		case 8:
+			fishs = [m_spbnFishs8 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+                    [fish randonPosition];
+					fish.visible = true;
+					return;
+				}
+			}
+			break;
+		case 9:
+			fishs = [m_spbnFishs9 children];
+			for (int i = 0; i < 1; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_SWIMMING;
+					[fish setDirection:DIR_LEFT];
+                    fish.position = ccp(g_sceneSize.width + fish.info.frameWidth / 2, g_sceneSize.height / 2);
+					fish.visible = true;	
+                    return;
+				}
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+- (void)addFish:(int)type pos:(CGPoint)pos isLeft:(BOOL)isLeft
+{
+	CCArray* fishs;
+	switch (type) {
+		case 0:
+			fishs = [m_spbnFishs0 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+                        
+                    } else if (m_cntGameLineupType == 1) {
+						
+                        
+                    } else if (m_cntGameLineupType == 2) {
+                        
+                    }
+					return;
+				}
+                
+			}
+			break;
+		case 1:
+			fishs = [m_spbnFishs1 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						
+                        
+                    } else if (m_cntGameLineupType == 2) {
+                        
+                    }
+					return;
+				}
+			}
+			break;
+		case 2:
+			fishs = [m_spbnFishs2 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						if (isLeft) {
+							[fish setDirection:DIR_RIGHT];
+							fish.lineupDirection = DIR_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT];
+							fish.lineupDirection = DIR_LEFT;
+						}
+                        
+                    } else if (m_cntGameLineupType == 2) {
+						if (isLeft) {
+							[fish setDirection:DIR_DOWN];
+							fish.lineupDirection = DIR_DOWN_LEFT;
+						} else {
+							[fish setDirection:DIR_DOWN];
+							fish.lineupDirection = DIR_RIGHT_DOWN;
+						} 
+                    }
+					return;
+				}
+			}
+			break;
+		case 3:
+			fishs = [m_spbnFishs3 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						if (isLeft) {
+							[fish setDirection:DIR_RIGHT];
+							fish.lineupDirection = DIR_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT];
+							fish.lineupDirection = DIR_LEFT;
+						}
+                        
+                    } else if (m_cntGameLineupType == 2) {
+						if (isLeft) {
+							[fish setDirection:DIR_DOWN];
+							fish.lineupDirection = DIR_DOWN_LEFT;
+						} else {
+							[fish setDirection:DIR_DOWN];
+							fish.lineupDirection = DIR_RIGHT_DOWN;
+						} 
+                    }
+					return;
+				}
+			}
+			break;
+		case 4:
+			fishs = [m_spbnFishs4 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						if (isLeft) {
+							[fish setDirection:DIR_RIGHT];
+							fish.lineupDirection = DIR_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT];
+							fish.lineupDirection = DIR_LEFT;
+						}
+                        
+                    } else if (m_cntGameLineupType == 2) {
+						if (isLeft) {
+							[fish setDirection:DIR_DOWN];
+							fish.lineupDirection = DIR_DOWN_LEFT;
+						} else {
+							[fish setDirection:DIR_DOWN];
+							fish.lineupDirection = DIR_RIGHT_DOWN;
+						} 
+                    }
+					return;
+				}
+			}
+			break;
+		case 5:
+			fishs = [m_spbnFishs5 children];
+			for (int i = 0; i < 2; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						
+                        
+                    } else if (m_cntGameLineupType == 2) {
+                        
+                    }
+					return;
+				}
+			}
+			break;
+		case 6:
+			fishs = [m_spbnFishs6 children];
+			for (int i = 0; i < 2; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						
+                        
+                    } else if (m_cntGameLineupType == 2) {
+                        
+                    }
+					return;
+				}
+			}
+			break;
+		case 7:
+			fishs = [m_spbnFishs7 children];
+			for (int i = 0; i < 2; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						
+                        
+                    } else if (m_cntGameLineupType == 2) {
+                        
+                    }
+					return;
+				}
+			}
+			break;
+		case 8:
+			fishs = [m_spbnFishs8 children];
+			for (int i = 0; i < 30; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						
+                        
+                    } else if (m_cntGameLineupType == 2) {
+						if (isLeft) {
+							[fish setDirection:DIR_DOWN];
+							fish.lineupDirection = DIR_DOWN_LEFT;
+						} else {
+							[fish setDirection:DIR_DOWN];
+							fish.lineupDirection = DIR_RIGHT_DOWN;
+						} 
+                    }
+					return;
+				}
+			}
+			break;
+		case 9:
+			fishs = [m_spbnFishs9 children];
+			for (int i = 0; i < 1; i ++) {
+				CCNode* node = [fishs objectAtIndex:i];
+				NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+				Fish *fish = (Fish *)node;
+				if (fish.state == STATE_READY) {
+                    fish.state = STATE_ACTION;
+                    fish.position = pos;
+                    fish.visible = true;
+					[fish setCount:0];
+                    if (m_cntGameLineupType == 0) {
+                        if (isLeft) {
+							[fish setDirection:DIR_UP_RIGHT];
+							fish.lineupDirection = DIR_UP_RIGHT;
+						} else {
+							[fish setDirection:DIR_LEFT_UP];
+							fish.lineupDirection = DIR_LEFT_UP;
+						}
+						
+                    } else if (m_cntGameLineupType == 1) {
+						
+                        
+                    } else if (m_cntGameLineupType == 2) {
+                        
+                    }
+					return;
+				}
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+
+//子弹
+- (void)updateBullets
+{		
+	CCArray* bullets = [m_spbnBullets children];	
+	int count = [bullets count];
+	for (int i = 0; i < count; i ++) {
+		CCNode* node = [bullets objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Bullet class]], @"not a bullet!");
+		Bullet* bullet = (Bullet*)node;
+		if (bullet.visible == NO) {
+			continue;
+		}
+		bullet.collideRect = CGRectMake(bullet.position.x, bullet.position.y, 1, 1);
+		
+		//一级鱼
+		CCArray* fishs0 = [m_spbnFishs0 children];	
+		int count0 = [fishs0 count];
+		for (int i = 0; i < count0; i ++) {
+			CCNode* node = [fishs0 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+		//二级鱼
+		CCArray* fishs1 = [m_spbnFishs1 children];	
+		int count1 = [fishs1 count];
+		for (int i = 0; i < count1; i ++) {
+			CCNode* node = [fishs1 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+		//三级鱼
+		CCArray* fishs2 = [m_spbnFishs2 children];	
+		int count2 = [fishs2 count];
+		for (int i = 0; i < count2; i ++) {
+			CCNode* node = [fishs2 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+		//四级鱼
+		CCArray* fishs3 = [m_spbnFishs3 children];	
+		int count3 = [fishs3 count];
+		for (int i = 0; i < count3; i ++) {
+			CCNode* node = [fishs3 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+		//五级鱼
+		CCArray* fishs4 = [m_spbnFishs4 children];	
+		int count4 = [fishs4 count];
+		for (int i = 0; i < count4; i ++) {
+			CCNode* node = [fishs4 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+		//六级鱼
+		CCArray* fishs5 = [m_spbnFishs5 children];	
+		int count5 = [fishs5 count];
+		for (int i = 0; i < count5; i ++) {
+			CCNode* node = [fishs5 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+		//七级鱼
+		CCArray* fishs6 = [m_spbnFishs6 children];	
+		int count6 = [fishs6 count];
+		for (int i = 0; i < count6; i ++) {
+			CCNode* node = [fishs6 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}	
+		}
+		
+		//八级鱼
+		CCArray* fishs7 = [m_spbnFishs7 children];	
+		int count7 = [fishs7 count];
+		for (int i = 0; i < count7; i ++) {
+			CCNode* node = [fishs7 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+		//九级鱼
+		CCArray* fishs8 = [m_spbnFishs8 children];	
+		int count8 = [fishs8 count];
+		for (int i = 0; i < count8; i ++) {
+			CCNode* node = [fishs8 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+		//十级鱼
+		CCArray* fishs9 = [m_spbnFishs9 children];	
+		int count9 = [fishs9 count];
+		for (int i = 0; i < count9; i ++) {
+			CCNode* node = [fishs9 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(bullet.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED && fish.visible == YES) {
+				[bullet explode];
+				return;
+			}
+		}
+		
+	}	
+}
+
+- (void)addBullet:(double)dir
+{	
+	CCArray* bullets = [m_spbnBullets children];	
+	for (int i = 0; i < 30; i ++) {
+		CCNode* node = [bullets objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Bullet class]], @"not a bullet!");
+		Bullet *bullet = (Bullet *)node;
+		if (bullet.visible == NO) {
+			[bullet setDirection:dir];
+			bullet.visible = YES;
+			return;
+		}
+	}
+}
+
+
+//网
+- (void)updateNets
+{
+	CCArray* nets = [m_spbnFishnets children];	
+	int count = [nets count];
+	double yu[] = {25,20,15,12,10,8,5,4,2,0.5};
+    double cntGameCannonLevel = (double)m_cntGameCannonLevel;
+	for (int i = 0; i < count; i ++) {
+		CCNode* node = [nets objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Net class]], @"not a Net!");
+		Net* net = (Net*)node;		
+		if (net.visible == NO || net.isCollide == NO) {
+			continue;
+		}
+        if (m_cntGameCannonLevel < 2) {
+            net.collideRect = CGRectMake(net.position.x - [net contentSize].width / 2, net.position.y - [net contentSize].height / 2, [net contentSize].width * 0.5, [net contentSize].height * 0.5);
+        } else if (m_cntGameCannonLevel < 5) {
+            net.collideRect = CGRectMake(net.position.x - [net contentSize].width / 2, net.position.y - [net contentSize].height / 2, [net contentSize].width * 0.75, [net contentSize].height * 0.75);
+        } else {
+            net.collideRect = CGRectMake(net.position.x - [net contentSize].width / 2 * 0., net.position.y - [net contentSize].height / 2, [net contentSize].width, [net contentSize].height);
+        }
+        
+		
+		//一级鱼
+		CCArray* fishs0 = [m_spbnFishs0 children];	
+		int count0 = [fishs0 count];
+		for (int i = 0; i < count0; i ++) {
+			CCNode* node = [fishs0 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[0] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}		
+			}
+		}
+		
+		//二级鱼
+		CCArray* fishs1 = [m_spbnFishs1 children];	
+		int count1 = [fishs1 count];
+		for (int i = 0; i < count1; i ++) {
+			CCNode* node = [fishs1 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[1] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}
+			}
+		}
+		
+		//三级鱼
+		CCArray* fishs2 = [m_spbnFishs2 children];	
+		int count2 = [fishs2 count];
+		for (int i = 0; i < count2; i ++) {
+			CCNode* node = [fishs2 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[2] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}
+			}
+		}
+		
+		//四级鱼
+		CCArray* fishs3 = [m_spbnFishs3 children];	
+		int count3 = [fishs3 count];
+		for (int i = 0; i < count3; i ++) {
+			CCNode* node = [fishs3 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[3] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}
+			}
+		}
+		
+		//五级鱼
+		CCArray* fishs4 = [m_spbnFishs4 children];	
+		int count4 = [fishs4 count];
+		for (int i = 0; i < count4; i ++) {
+			CCNode* node = [fishs4 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect) && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[4] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}
+			}
+		}
+		
+		//六级鱼
+		CCArray* fishs5 = [m_spbnFishs5 children];	
+		int count5 = [fishs5 count];
+		for (int i = 0; i < count5; i ++) {
+			CCNode* node = [fishs5 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[5] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}
+			}
+		}
+		
+		//七级鱼
+		CCArray* fishs6 = [m_spbnFishs6 children];	
+		int count6 = [fishs6 count];
+		for (int i = 0; i < count6; i ++) {
+			CCNode* node = [fishs6 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[6] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}			
+			}	
+		}
+		
+		//八级鱼
+		CCArray* fishs7 = [m_spbnFishs7 children];	
+		int count7 = [fishs7 count];
+		for (int i = 0; i < count7; i ++) {
+			CCNode* node = [fishs7 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[7] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+                    fish.state = STATE_CATCHED;
+                    [fish setCount:0];
+				}
+			}
+		}
+		
+		//九级鱼
+		CCArray* fishs8 = [m_spbnFishs8 children];	
+		int count8 = [fishs8 count];
+		for (int i = 0; i < count8; i ++) {
+			CCNode* node = [fishs8 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[8] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}
+			}
+		}
+		
+		//十级鱼
+		CCArray* fishs9 = [m_spbnFishs9 children];	
+		int count9 = [fishs9 count];
+		for (int i = 0; i < count9; i ++) {
+			CCNode* node = [fishs9 objectAtIndex:i];
+			NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+			Fish *fish = (Fish *)node;
+			if (CGRectIntersectsRect(net.collideRect, fish.info.collideRect)  && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+				double num = yu[9] * ( 1 + (cntGameCannonLevel + 1) * (cntGameCannonLevel + 1) / 49);
+				double a = (double)(random() % 10000) / 10000 * 100 ;
+				if (a  < num) {
+					fish.state = STATE_CATCHED;
+					[fish setCount:0];
+				}
+			}
+		}
+		
+		if (net.isCollide == YES) {
+			net.isCollide = NO;
+		}
+	}
+}
+
+- (void)addNetOn:(CGPoint)pos
+{
+	CCArray* nets = [m_spbnFishnets children];	
+	for (int i = 0; i < 30; i ++) {
+		CCNode* node = [nets objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Net class]], @"not a net!");
+		Net *net = (Net *)node;
+		if (net.visible == NO) {
+			net.position = pos;
+            if (m_cntGameCannonLevel < 2) {
+                [net initData:0];
+            } else if (m_cntGameCannonLevel < 5) {
+                [net initData:1];
+            } else {
+                [net initData:2];
+            }
+			
+			net.visible = YES;
+			return;
+		}
+	}
+}
+
+//金币
+- (void)updateMoneys
+{
+	
+}
+
+- (void)addMoney:(CGPoint)pos
+{
+	CCArray* moneys = [m_spbnMoneys children];	
+	for (int i = 0; i < 30; i ++) {
+		CCNode* node = [moneys objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Money class]], @"not money!");
+		Money *money = (Money *)node;
+		if (money.visible == NO) {
+			money.position = pos;
+			[money setActions];
+			money.visible = YES;
+			return;
+		}
+	}
+}
+
+//金币数字
+- (void)updateNums
+{
+	
+}
+
+- (void)addNumOn:(CGPoint)pos
+{
+}
+
+//激光
+- (void)updateLaser
+{
+    if (g_cntGameSp >= 1000 && m_cntGameLaserTip == 0) {
+		g_cntGameSp = 1000;
+		self.isTouchEnabled = NO;
+		m_isGameLaserTip = YES;
+	}
+	
+	if (m_isGameLaserTip) {
+		m_cntGameLaserTip ++;
+		if (m_cntGameLaserTip % 10 > 5) {
+			m_spGameLaserTip.visible = YES;
+		} else {
+			m_spGameLaserTip.visible = NO;
+		}
+		
+		if (m_cntGameLaserTip > 30) {
+			m_spGameLaserTip.visible = NO;
+			self.isTouchEnabled = YES;
+			m_isGameLaserTip = NO;
+		}
+	}
+	
+	if (m_isGameLaserFiring == YES) {
+		m_cntGameLaserFire ++;
+		m_isGameCannonFiring = YES;
+		if (m_cntGameLaserFire > 55) {
+			m_cntGameLaserFire = 0;
+			m_isGameLaserFiring = NO;
+		}
+	}
+	
+	//碰撞
+	if ([self getChildByTag:5] == nil ) {
+		return;
+	}
+	
+	if ([self getChildByTag:5] != m_spGameLaser) {
+		return;
+	}
+	
+	//一级鱼
+	CCArray* fishs0 = [m_spbnFishs0 children];	
+	int count0 = [fishs0 count];
+	for (int i = 0; i < count0; i ++) {
+		CCNode* node = [fishs0 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}
+	
+	//二级鱼
+	CCArray* fishs1 = [m_spbnFishs1 children];	
+	int count1 = [fishs1 count];
+	for (int i = 0; i < count1; i ++) {
+		CCNode* node = [fishs1 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}
+	
+	//三级鱼
+	CCArray* fishs2 = [m_spbnFishs2 children];	
+	int count2 = [fishs2 count];
+	for (int i = 0; i < count2; i ++) {
+		CCNode* node = [fishs2 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}
+	
+	//四级鱼
+	CCArray* fishs3 = [m_spbnFishs3 children];	
+	int count3 = [fishs3 count];
+	for (int i = 0; i < count3; i ++) {
+		CCNode* node = [fishs3 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}
+	
+	//五级鱼
+	CCArray* fishs4 = [m_spbnFishs4 children];	
+	int count4 = [fishs4 count];
+	for (int i = 0; i < count4; i ++) {
+		CCNode* node = [fishs4 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}
+	
+	//六级鱼
+	CCArray* fishs5 = [m_spbnFishs5 children];	
+	int count5 = [fishs5 count];
+	for (int i = 0; i < count5; i ++) {
+		CCNode* node = [fishs5 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}
+	
+	//七级鱼
+	CCArray* fishs6 = [m_spbnFishs6 children];	
+	int count6 = [fishs6 count];
+	for (int i = 0; i < count6; i ++) {
+		CCNode* node = [fishs6 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}	
+	}
+	
+	//八级鱼
+	CCArray* fishs7 = [m_spbnFishs7 children];	
+	int count7 = [fishs7 count];
+	for (int i = 0; i < count7; i ++) {
+		CCNode* node = [fishs7 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}
+	
+	//九级鱼
+	CCArray* fishs8 = [m_spbnFishs8 children];	
+	int count8 = [fishs8 count];
+	for (int i = 0; i < count8; i ++) {
+		CCNode* node = [fishs8 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}
+	
+	//十级鱼
+	CCArray* fishs9 = [m_spbnFishs9 children];	
+	int count9 = [fishs9 count];
+	for (int i = 0; i < count9; i ++) {
+		CCNode* node = [fishs9 objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Fish class]], @"not a fish0!");
+		Fish *fish = (Fish *)node;
+		if ([m_spGameLaser collidesWithRect:fish.info.collideRect] && fish.state != STATE_READY && fish.state != STATE_CATCHED) {
+			fish.state = STATE_CATCHED;
+			[fish setCount:0];
+		}
+	}	
+    
+}
+
+- (void)addLaser:(double)dir
+{
+	m_spGameLaser = [Laser spriteWithFile:@"game_laser.png"];
+	[m_spGameLaser setLaserData:dir];
+	[self addChild:m_spGameLaser z:1 tag:5];
+}
+
+/***************************************************************************************/
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  
+{  
+	// 选择一种方式
+	UITouch *touch = [touches anyObject];
+	CGPoint location = [touch locationInView:[touch view]];
+	location = [[CCDirector sharedDirector] convertToGL:location];
+	
+	if (CGRectIntersectsRect(CGRectMake(location.x, location.y, 1, 1), CGRectMake(g_sceneSize.width / 2 - 150, 0, 100, 40))) {
+		[self onAddCannonLV];
+	} else if (CGRectIntersectsRect(CGRectMake(location.x, location.y, 1, 1), CGRectMake(g_sceneSize.width / 2 + 50, 0, 100, 40))) {
+		[self onDecCannonLV];
+	} else {
+        if (m_isGameLaserFiring || m_isGameCannonFiring) {
+            return;
+        } 
+		
+        
+        //触摸点与参照点的角度  参照点（g_sceneSize / 2, 10）
+        double w = location.x - g_sceneSize.width / 2;
+        double h = location.y + 10;
+        double radian = atan(w/h);
+        double degrees = CC_RADIANS_TO_DEGREES(radian);
+        [m_spGameCannon runAction:[CCRotateTo actionWithDuration:0 angle:degrees]];
+        
+        
+        if (m_isGameCannonFiring == NO) {
+            m_isGameCannonFiring = YES;
+            
+            //激光
+            if (g_cntGameSp >= 1000) {
+                g_cntGameSp = 0;
+                m_cntGameLaserTip = 0;
+                m_isGameLaserFiring = YES;
+                //炮口攻
+                id ac1 = [CCMoveTo actionWithDuration: 0 position:ccp(m_spGameCannonUp.position.x, m_spGameCannonUp.position.y - 10)];
+                id ac2 = [CCMoveTo actionWithDuration: 0.2 position:ccp(m_spGameCannonUp.position.x, m_spGameCannonUp.position.y)];
+                [m_spGameCannonUp runAction:[CCSequence actions: ac1, ac2, nil]];
+                [self addLaser:radian];
+                //子弹
+            } else {
+                if (g_isDoubleScore == NO) {
+                    if (g_cntGameMoney >= (m_cntGameCannonLevel + 1)) {
+                        g_cntGameMoney -= (m_cntGameCannonLevel + 1);
+                        
+                        if (g_hasSound == YES) {
+                            [[SimpleAudioEngine sharedEngine] playEffect:@"shoot.wav"];
+                        }
+                        //炮口攻
+                        id ac1 = [CCMoveTo actionWithDuration: 0 position:ccp(m_spGameCannonUp.position.x, m_spGameCannonUp.position.y - 10)];
+                        id ac2 = [CCMoveTo actionWithDuration: 0.2 position:ccp(m_spGameCannonUp.position.x, m_spGameCannonUp.position.y)];
+                        [m_spGameCannonUp runAction:[CCSequence actions: ac1, ac2, nil]];
+                        [self addBullet:radian];	
+                    }
+                } else {
+                    if (g_cntGameMoney >= (m_cntGameCannonLevel + 1) * 2) {
+                        g_cntGameMoney -= (m_cntGameCannonLevel + 1) * 2;
+                        
+                        if (g_hasSound == YES) {
+                            [[SimpleAudioEngine sharedEngine] playEffect:@"shoot.wav"];
+                        }
+                        //炮口攻
+                        id ac1 = [CCMoveTo actionWithDuration: 0 position:ccp(m_spGameCannonUp.position.x, m_spGameCannonUp.position.y - 10)];
+                        id ac2 = [CCMoveTo actionWithDuration: 0.2 position:ccp(m_spGameCannonUp.position.x, m_spGameCannonUp.position.y)];
+                        [m_spGameCannonUp runAction:[CCSequence actions: ac1, ac2, nil]];
+                        [self addBullet:radian];	
+                    }
+                }
+            }
+            
+            
+        }
+        
+	}
+}  
+
+
+/***************************************************************************************/
+
+- (void)onAddCannonLV
+{
+	m_cntGameCannonLevel ++;
+	if (m_cntGameCannonLevel > 6) {
+		m_cntGameCannonLevel = 0;
+	}
+	//炮的等级更新
+    if (g_isIpad) {
+        [m_spGameCannonLevel setTextureRect:CGRectMake(m_cntGameCannonLevel * 22, 0, 22, 26)];
+    } else {
+        [m_spGameCannonLevel setTextureRect:CGRectMake(m_cntGameCannonLevel * 9, 0, 9, 12)];
+    }
+    
+    
+	CCArray* nets = [m_spbnFishnets children];	
+	int count = [nets count];
+	for (int i = 0; i < count; i ++) {
+		CCNode* node = [nets objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Net class]], @"not a Net!");
+		Net* net = (Net*)node;
+        if (m_cntGameCannonLevel < 2) {
+            [net initData:0];
+        } else if (m_cntGameCannonLevel) {
+            [net initData:1];
+        } else {
+            [net initData:2];
+        }
+        
+    }
+}
+
+- (void)onDecCannonLV
+{
+	m_cntGameCannonLevel --;
+	if (m_cntGameCannonLevel < 0) {
+		m_cntGameCannonLevel = 6;
+	}
+	//炮的等级更新
+    if (g_isIpad) {
+        [m_spGameCannonLevel setTextureRect:CGRectMake(m_cntGameCannonLevel * 22, 0, 22, 26)];
+    } else {
+        [m_spGameCannonLevel setTextureRect:CGRectMake(m_cntGameCannonLevel * 9, 0, 9, 12)];
+    }
+	
+    CCArray* nets = [m_spbnFishnets children];	
+	int count = [nets count];
+	for (int i = 0; i < count; i ++) {
+		CCNode* node = [nets objectAtIndex:i];
+		NSAssert([node isKindOfClass:[Net class]], @"not a Net!");
+		Net* net = (Net*)node;
+        if (m_cntGameCannonLevel < 2) {
+            [net initData:0];
+        } else if (m_cntGameCannonLevel) {
+            [net initData:1];
+        } else {
+            [net initData:2];
+        }
+        
+    }
+}
+
+- (void)onPhoto
+{
+	NSLog(@"截图!");
+    // 设定截图大小
+    CCRenderTexture *target = [CCRenderTexture renderTextureWithWidth:g_sceneSize.width height:g_sceneSize.height];
+    [target begin];
+    [self visit];
+    [target end];
+	UIImageWriteToSavedPhotosAlbum([target getUIImage], self, nil, nil);
+	
+	
+    //	UIGraphicsBeginImageContext(g_sceneSize);
+    //	[self renderInContext:UIGraphicsGetCurrentContext()];
+    //	UIImage *image = UIGraphicsGetImageFromCurrentImageContext(); 
+    //	UIGraphicsEndImageContext();
+}
+
+- (void)onPause
+{
+	[self unscheduleAllSelectors];
+	m_menuGame.visible = YES;
+	self.isTouchEnabled = NO;
+}
+
+- (void)onContinue
+{
+	self.isTouchEnabled = YES;
+	[self schedule:@selector(update:) interval:0.05];
+	m_menuGame.visible = NO;
+}
+
+- (void)onSelect
+{
+    //	self.isTouchEnabled = YES;
+    //	[self schedule:@selector(update:) interval:0.05];
+	[[CCDirector sharedDirector] pushScene:[CCTransitionFadeDown transitionWithDuration:1 scene:[SelectScene scene]]];
+}
+
+- (void)onSetting
+{
+    //	self.isTouchEnabled = YES;
+    //	[self schedule:@selector(update:) interval:0.05];
+	[[CCDirector sharedDirector] pushScene:[CCTransitionFadeDown transitionWithDuration:1 scene:[SettingScene scene]]];
+}
+
+- (void)onMenuMain
+{
+	[[CCDirector sharedDirector] replaceScene:[CCTransitionFadeDown transitionWithDuration:1 scene:[MenuMainScene scene]]];
+    g_hasInGame = NO;
+}
+
+/***************************************************************************************/
+- (void)onEnter
+{
+    [super onEnter];
+    [self update:0];
+}
+
+- (void)dealloc
+{
+	[super dealloc];
+}
+
+- (void)saveInfo
+{
+	//金币
+	NSNumber *number0=[NSNumber numberWithInt:g_cntGameMoney];
+	NSNumber *number1=[NSNumber numberWithInt:g_cntGameSp];
+	NSNumber *number2=[NSNumber numberWithInt:g_cntGameExp];
+	
+	NSArray *array = [NSArray arrayWithObjects:number0, number1, number2, nil];           
+    NSUserDefaults *saveDefaults = [NSUserDefaults standardUserDefaults];  
+    [saveDefaults setObject:array forKey:@"SaveKey"];  
+}
+
+- (void)readInfo
+{
+    NSUserDefaults *saveDefaults = [NSUserDefaults standardUserDefaults];  
+	NSArray *array  = [saveDefaults objectForKey:@"SaveKey"];        
+	if ([array count] == 0) {
+		g_cntGameMoney = 500;  
+		g_cntGameSp = 0;   
+		g_cntGameExp = 0; 
+	} else {
+		NSNumber *number;
+		number= [array objectAtIndex:0];
+		g_cntGameMoney = [number intValue]; 
+		
+		number= [array objectAtIndex:1];
+		g_cntGameSp = [number intValue]; 
+		
+		number= [array objectAtIndex:2];
+		g_cntGameExp = [number intValue]; 
+	}
+    
+    
+}
+
+-(void)saveDemo
+{
+    //=================NSUserDefaults========================  
+    NSString *saveStr1 = @"我是";  
+    NSString *saveStr2 = @"数据";  
+    NSArray *array = [NSArray arrayWithObjects:saveStr1, saveStr2, nil];           
+    //Save  
+    NSUserDefaults *saveDefaults = [NSUserDefaults standardUserDefaults];  
+    [saveDefaults setObject:array forKey:@"SaveKey"];  
+    //用于测试是否已经保存了数据  
+    saveStr1 = @"hhhhhhiiii";  
+    saveStr2 =@"mmmmmmiiii";    
+    //---Load  
+    array = [saveDefaults objectForKey:@"SaveKey"];  
+    saveStr1 = [array objectAtIndex:0];  
+    saveStr2 = [array objectAtIndex:1];  
+    CCLOG(@"tr:%@",saveStr1);  
+    CCLOG(@"astr:%@",saveStr2);  
+}		  
+
+@end

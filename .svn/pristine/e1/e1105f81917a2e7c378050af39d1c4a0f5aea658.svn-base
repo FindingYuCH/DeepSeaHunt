@@ -1,0 +1,64 @@
+//
+//  Fish.h
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+#import "cocos2d.h"
+
+
+//基本信息
+typedef struct 
+{
+	int         type;       //种类
+	int	        gold;       //金币
+	int	        sp;         //能量
+	int	        exp;        //经验
+	float		speed;      //速度
+	float		frameWidth; //帧宽
+	float       frameHeight;//帧宽
+	CGRect      collideRect;//碰撞区域
+} Info;
+
+//鱼状态
+typedef enum 
+{
+	STATE_READY = 0,     //就绪
+	STATE_SWIMMING,      //游动
+	STATE_ACTION,        //队形
+	STATE_CATCHED,       //被捕
+} State;
+
+//鱼的方向
+typedef enum 
+{
+	DIR_UP = 0,
+	DIR_UP_RIGHT,
+	DIR_RIGHT,
+	DIR_RIGHT_DOWN,
+	DIR_DOWN,
+	DIR_DOWN_LEFT,
+	DIR_LEFT,
+	DIR_LEFT_UP,
+	
+} Dir;
+
+@interface Fish : CCSprite {	
+	int count;
+	int curDir;
+	float speedX;
+	float speedY;
+}
+
+@property (nonatomic, readwrite) Info info;
+@property (nonatomic, readwrite) int state;
+@property (nonatomic, readwrite) Dir lineupDirection;
+- (void)initData:(int)type;
+- (void)update;
+- (void)setDirection:(Dir)dir;
+- (void)randonPosition;
+- (void)setCount:(int)value;
+@end

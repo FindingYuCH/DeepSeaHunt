@@ -1,0 +1,36 @@
+//
+//  Net.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "Net.h"
+
+
+@implementation Net
+@synthesize collideRect;
+@synthesize isCollide;
+
+- (void)initData:(int)type
+{
+	isCollide = YES;
+    if (type == 0) {
+        [self runAction:[CCScaleTo actionWithDuration:0 scale:0.5]];
+    } else if (type == 1) {
+        [self runAction:[CCScaleTo actionWithDuration:0 scale:0.75]];
+    } else {
+        [self runAction:[CCScaleTo actionWithDuration:0 scale:1]];
+    }
+	[self schedule:@selector(destroy) interval: 0.2];
+}
+
+
+
+- (void)destroy
+{
+	self.visible = false;
+	[self unscheduleAllSelectors];
+}
+@end

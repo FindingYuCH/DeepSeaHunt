@@ -1,0 +1,126 @@
+//
+//  Laser.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "GameDefine.h"
+#import "Laser.h"
+
+
+@implementation Laser
+
+
+- (void)setLaserData:(double)direction
+{
+	dir = direction;
+	//基本信息
+	double degrees = CC_RADIANS_TO_DEGREES(direction);
+    
+    
+	
+    if (g_isIpad) {
+        float offX = 100 * sin(direction);
+        float offY = 100 * cos(direction);
+        self.anchorPoint = ccp(0.5, 0.05);
+        self.position = ccp(g_sceneSize.width / 2 + offX, 30 + offY);
+    } else {
+        float offX = 50 * sin(direction);
+        float offY = 50 * cos(direction);
+        self.anchorPoint = ccp(0.5, 0.15);
+        self.position = ccp(g_sceneSize.width / 2 + offX, 10 + offY);
+    }
+	
+	[self runAction:[CCRotateTo actionWithDuration:0 angle:degrees]];
+	
+	//y = kx + b
+	if(degrees == 0) {
+		k = 0;
+		b = 0;
+	} else if (degrees >= 0) {
+		k = tan(CC_DEGREES_TO_RADIANS(90 - degrees));
+		b = 48/cos(CC_DEGREES_TO_RADIANS(90 - degrees)) ;
+	} else{
+		k = tan(CC_DEGREES_TO_RADIANS(90 - degrees));
+		b = 48/cos(CC_DEGREES_TO_RADIANS(90 - degrees)) ;
+	}
+	
+	CCAnimation *animation=[CCAnimation animation];
+	[animation setDelayPerUnit:0.3f];
+	if (g_isIpad) {
+        for(int i = 0; i < 12; i++) 
+        {	
+            if (i < 5) {
+                [animation addSpriteFrameWithTexture:self.texture rect:CGRectMake(180 * i, 0, 180, 850)];
+            } else if (i < 11) {
+                [animation addSpriteFrameWithTexture:self.texture rect:CGRectMake(180 * (2 + i % 3) , 0, 180, 850)];
+            } else {
+                [animation addSpriteFrameWithTexture:self.texture rect:CGRectMake(180 * 1, 0, 180, 850)];
+            }
+            
+            
+        }
+    } else {
+        for(int i = 0; i < 12; i++) 
+        {	
+            if (i < 5) {
+                [animation addSpriteFrameWithTexture:self.texture rect:CGRectMake(95 * i, 0, 95, 420)];
+            } else if (i < 11) {
+                [animation addSpriteFrameWithTexture:self.texture rect:CGRectMake(95 * (2 + i % 3) , 0, 95, 420)];
+            } else {
+                [animation addSpriteFrameWithTexture:self.texture rect:CGRectMake(95 * 1, 0, 95, 420)];
+            }
+            
+        }	
+    }
+    
+	id action = [CCAnimate actionWithAnimation: animation];
+	
+	id finish = [CCCallFunc actionWithTarget:self selector:@selector(finishAction)];
+    
+	[self runAction:[CCSequence actions: action,finish, nil]];
+	
+}
+
+- (void)finishAction
+{
+	[self removeFromParentAndCleanup:YES];
+}
+
+- (BOOL)collidesWithRect:(CGRect)rect
+{
+    if (g_isIpad) {
+        if(k == 0) {
+            if((rect.origin.x - g_sceneSize.width / 2)  + rect.size.width < - 95
+               || (rect.origin.x - g_sceneSize.width / 2) > 95
+               || rect.origin.y < 20)
+                return NO;
+        }
+        else {
+            if((rect.origin.x - g_sceneSize.width / 2)  + rect.size.width < ((rect.origin.y)  - b) / k 
+               || (rect.origin.x - g_sceneSize.width / 2) > ((rect.origin.y) + b) / k
+               || rect.origin.y < 20)
+                return NO;
+        }
+    } else {
+        if(k == 0) {
+            if((rect.origin.x - g_sceneSize.width / 2)  + rect.size.width < - 48
+               || (rect.origin.x - g_sceneSize.width / 2) > 48
+               || rect.origin.y < 20)
+                return NO;
+        }
+        else {
+            if((rect.origin.x - g_sceneSize.width / 2)  + rect.size.width < ((rect.origin.y)  - b) / k 
+               || (rect.origin.x - g_sceneSize.width / 2) > ((rect.origin.y) + b) / k
+               || rect.origin.y < 20)
+                return NO;
+        }
+    }
+    
+	return YES;
+}
+
+@end
+

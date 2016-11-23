@@ -1,0 +1,1286 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>BaiduMobAdViewDelegate Protocol Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.0.5 (build 789)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">BaiduMobAdSdk </a></h1>
+				<a id="developerHome" href="../index.html">Baidu</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">BaiduMobAdViewDelegate Protocol Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/appSpec">&nbsp;&nbsp;&nbsp;&nbsp;- appSpec</option>
+	
+	<option value="//api/name/channelId">&nbsp;&nbsp;&nbsp;&nbsp;- channelId</option>
+	
+	<option value="//api/name/didAdClicked">&nbsp;&nbsp;&nbsp;&nbsp;- didAdClicked</option>
+	
+	<option value="//api/name/didAdImpressed">&nbsp;&nbsp;&nbsp;&nbsp;- didAdImpressed</option>
+	
+	<option value="//api/name/didDismissLandingPage">&nbsp;&nbsp;&nbsp;&nbsp;- didDismissLandingPage</option>
+	
+	<option value="//api/name/enableLocation">&nbsp;&nbsp;&nbsp;&nbsp;- enableLocation</option>
+	
+	<option value="//api/name/failedDisplayAd:">&nbsp;&nbsp;&nbsp;&nbsp;- failedDisplayAd:</option>
+	
+	<option value="//api/name/keywords">&nbsp;&nbsp;&nbsp;&nbsp;- keywords</option>
+	
+	<option value="//api/name/publisherId">&nbsp;&nbsp;&nbsp;&nbsp;- publisherId</option>
+	
+	<option value="//api/name/userBirthday">&nbsp;&nbsp;&nbsp;&nbsp;- userBirthday</option>
+	
+	<option value="//api/name/userCity">&nbsp;&nbsp;&nbsp;&nbsp;- userCity</option>
+	
+	<option value="//api/name/userEducation">&nbsp;&nbsp;&nbsp;&nbsp;- userEducation</option>
+	
+	<option value="//api/name/userGender">&nbsp;&nbsp;&nbsp;&nbsp;- userGender</option>
+	
+	<option value="//api/name/userHobbies">&nbsp;&nbsp;&nbsp;&nbsp;- userHobbies</option>
+	
+	<option value="//api/name/userOtherAttributes">&nbsp;&nbsp;&nbsp;&nbsp;- userOtherAttributes</option>
+	
+	<option value="//api/name/userPostalCode">&nbsp;&nbsp;&nbsp;&nbsp;- userPostalCode</option>
+	
+	<option value="//api/name/userSalary">&nbsp;&nbsp;&nbsp;&nbsp;- userSalary</option>
+	
+	<option value="//api/name/userWork">&nbsp;&nbsp;&nbsp;&nbsp;- userWork</option>
+	
+	<option value="//api/name/willDisplayAd:">&nbsp;&nbsp;&nbsp;&nbsp;- willDisplayAd:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_人群属性板块">人群属性板块</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/appSpec">appSpec</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/channelId">channelId</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/didAdClicked">didAdClicked</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/didAdImpressed">didAdImpressed</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/didDismissLandingPage">didDismissLandingPage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/enableLocation">enableLocation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/failedDisplayAd:">failedDisplayAd:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/keywords">keywords</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/publisherId">publisherId</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userBirthday">userBirthday</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userCity">userCity</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userEducation">userEducation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userGender">userGender</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userHobbies">userHobbies</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userOtherAttributes">userOtherAttributes</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userPostalCode">userPostalCode</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userSalary">userSalary</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/userWork">userWork</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/willDisplayAd:">willDisplayAd:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="BaiduMobAdViewDelegate Protocol Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">BaiduMobAdViewDelegate Protocol Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">BaiduMobAdDelegateProtocol.h</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>广告sdk委托协议</p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/publisherId">&ndash;&nbsp;publisherId</a></code>
+		<span class="tooltip"><p>应用在mounion.baidu.com上的id</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/appSpec">&ndash;&nbsp;appSpec</a></code>
+		<span class="tooltip"><p>应用在mounion.baidu.com上的计费名</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/channelId">&ndash;&nbsp;channelId</a></code>
+		<span class="tooltip"><p>渠道id</p></span>
+	</span>
+	
+	<span class="task-item-suffix">required method</span>
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/enableLocation">&ndash;&nbsp;enableLocation</a></code>
+		<span class="tooltip"><p>启动位置信息</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/willDisplayAd:">&ndash;&nbsp;willDisplayAd:</a></code>
+		<span class="tooltip"><p>广告将要被载入</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/failedDisplayAd:">&ndash;&nbsp;failedDisplayAd:</a></code>
+		<span class="tooltip"><p>广告载入失败</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/didAdImpressed">&ndash;&nbsp;didAdImpressed</a></code>
+		<span class="tooltip"><p>本次广告展示成功时的回调</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/didAdClicked">&ndash;&nbsp;didAdClicked</a></code>
+		<span class="tooltip"><p>本次广告展示被用户点击时的回调</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/didDismissLandingPage">&ndash;&nbsp;didDismissLandingPage</a></code>
+		<span class="tooltip"><p>在用户点击完广告条出现全屏广告页面以后，用户关闭广告时的回调</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="人群属性板块" name="task_人群属性板块"></a>
+						<h3 class="subsubtitle task-title">人群属性板块</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/keywords">&ndash;&nbsp;keywords</a></code>
+		<span class="tooltip"><p>关键词数组</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userGender">&ndash;&nbsp;userGender</a></code>
+		<span class="tooltip"><p>用户性别</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userBirthday">&ndash;&nbsp;userBirthday</a></code>
+		<span class="tooltip"><p>用户生日</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userCity">&ndash;&nbsp;userCity</a></code>
+		<span class="tooltip"><p>用户城市</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userPostalCode">&ndash;&nbsp;userPostalCode</a></code>
+		<span class="tooltip"><p>用户邮编</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userWork">&ndash;&nbsp;userWork</a></code>
+		<span class="tooltip"><p>用户职业</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userEducation">&ndash;&nbsp;userEducation</a></code>
+		<span class="tooltip"><ul>
+<li>用户最高教育学历</li>
+<li>学历输入数字，范围为0-6</li>
+<li>0代表小学，1代表初中，2代表中专/高中，3代表专科</li>
+<li>4代表本科，5代表硕士，6代表博士</li>
+</ul>
+</span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userSalary">&ndash;&nbsp;userSalary</a></code>
+		<span class="tooltip"><ul>
+<li>用户收入</li>
+<li>收入输入数字,以元为单位</li>
+</ul>
+</span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userHobbies">&ndash;&nbsp;userHobbies</a></code>
+		<span class="tooltip"><p>用户爱好</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/userOtherAttributes">&ndash;&nbsp;userOtherAttributes</a></code>
+		<span class="tooltip"><p>其他自定义字段,key以及value都为NSString</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/appSpec" title="appSpec"></a>
+	<h3 class="subsubtitle method-title">appSpec</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>应用在mounion.baidu.com上的计费名</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)appSpec</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>应用在mounion.baidu.com上的计费名</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/channelId" title="channelId"></a>
+	<h3 class="subsubtitle method-title">channelId</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>渠道id</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)channelId</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>渠道id</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/didAdClicked" title="didAdClicked"></a>
+	<h3 class="subsubtitle method-title">didAdClicked</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>本次广告展示被用户点击时的回调</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)didAdClicked</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>本次广告展示被用户点击时的回调</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/didAdImpressed" title="didAdImpressed"></a>
+	<h3 class="subsubtitle method-title">didAdImpressed</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>本次广告展示成功时的回调</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)didAdImpressed</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>本次广告展示成功时的回调</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/didDismissLandingPage" title="didDismissLandingPage"></a>
+	<h3 class="subsubtitle method-title">didDismissLandingPage</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>在用户点击完广告条出现全屏广告页面以后，用户关闭广告时的回调</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)didDismissLandingPage</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>在用户点击完广告条出现全屏广告页面以后，用户关闭广告时的回调</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/enableLocation" title="enableLocation"></a>
+	<h3 class="subsubtitle method-title">enableLocation</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>启动位置信息</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BOOL)enableLocation</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>启动位置信息</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/failedDisplayAd:" title="failedDisplayAd:"></a>
+	<h3 class="subsubtitle method-title">failedDisplayAd:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>广告载入失败</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)failedDisplayAd:(BaiduMobFailReason)<em>reason</em></code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>广告载入失败</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/keywords" title="keywords"></a>
+	<h3 class="subsubtitle method-title">keywords</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>关键词数组</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSArray *)keywords</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>关键词数组</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/publisherId" title="publisherId"></a>
+	<h3 class="subsubtitle method-title">publisherId</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>应用在mounion.baidu.com上的id</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)publisherId</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>应用在mounion.baidu.com上的id</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userBirthday" title="userBirthday"></a>
+	<h3 class="subsubtitle method-title">userBirthday</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>用户生日</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSDate *)userBirthday</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>用户生日</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userCity" title="userCity"></a>
+	<h3 class="subsubtitle method-title">userCity</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>用户城市</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)userCity</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>用户城市</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userEducation" title="userEducation"></a>
+	<h3 class="subsubtitle method-title">userEducation</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<ul>
+<li>用户最高教育学历</li>
+<li>学历输入数字，范围为0-6</li>
+<li>0代表小学，1代表初中，2代表中专/高中，3代表专科</li>
+<li>4代表本科，5代表硕士，6代表博士</li>
+</ul>
+
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSInteger)userEducation</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<ul>
+<li>用户最高教育学历</li>
+<li>学历输入数字，范围为0-6</li>
+<li>0代表小学，1代表初中，2代表中专/高中，3代表专科</li>
+<li>4代表本科，5代表硕士，6代表博士</li>
+</ul>
+
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userGender" title="userGender"></a>
+	<h3 class="subsubtitle method-title">userGender</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>用户性别</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (BaiduMobAdUserGender)userGender</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>用户性别</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userHobbies" title="userHobbies"></a>
+	<h3 class="subsubtitle method-title">userHobbies</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>用户爱好</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSArray *)userHobbies</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>用户爱好</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userOtherAttributes" title="userOtherAttributes"></a>
+	<h3 class="subsubtitle method-title">userOtherAttributes</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>其他自定义字段,key以及value都为NSString</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSDictionary *)userOtherAttributes</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>其他自定义字段,key以及value都为NSString</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userPostalCode" title="userPostalCode"></a>
+	<h3 class="subsubtitle method-title">userPostalCode</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>用户邮编</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)userPostalCode</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>用户邮编</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userSalary" title="userSalary"></a>
+	<h3 class="subsubtitle method-title">userSalary</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<ul>
+<li>用户收入</li>
+<li>收入输入数字,以元为单位</li>
+</ul>
+
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSInteger)userSalary</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<ul>
+<li>用户收入</li>
+<li>收入输入数字,以元为单位</li>
+</ul>
+
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/userWork" title="userWork"></a>
+	<h3 class="subsubtitle method-title">userWork</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>用户职业</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (NSString *)userWork</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>用户职业</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/willDisplayAd:" title="willDisplayAd:"></a>
+	<h3 class="subsubtitle method-title">willDisplayAd:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>广告将要被载入</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)willDisplayAd:(BaiduMobAdView *)<em>adview</em></code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>广告将要被载入</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">BaiduMobAdDelegateProtocol.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 Baidu. All rights reserved. (Last updated: 2013-03-26)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 789)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
+		</script>
+	</body>
+</html>

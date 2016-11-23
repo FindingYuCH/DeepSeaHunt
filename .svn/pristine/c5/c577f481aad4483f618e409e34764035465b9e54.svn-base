@@ -1,0 +1,176 @@
+//
+//  SettingScene.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+
+#import "SettingScene.h"
+#import "GameDefine.h"
+#import "G.h"
+#import "CCDirector_.h"
+#import "SimpleAudioEngine.h"
+
+@implementation SettingScene
++ (id)scene
+{
+	CCScene *scene = [CCScene node];
+    SettingScene *layer = [SettingScene node];
+    [scene addChild:layer];
+	return scene;
+}
+
+-(id) init
+{
+	if ((self = [super init])) {
+		CGSize size = [[CCDirector sharedDirector] winSize];
+		//数据
+        //        m_cntSoundValue = [CDAudioManager sharedManager].backgroundMusic.volume * 100;
+        //        m_cntSoundValueTemp = m_cntSoundValue;    
+        
+		//背景
+		CCSprite *m_spComBg = [CCSprite spriteWithFile:@"gamescene1.png"];
+		m_spComBg.position = ccp(size.width / 2, size.height / 2);
+		[self addChild: m_spComBg];
+		
+		//标题
+		CCSprite *m_spSelectTitle = [CCSprite spriteWithFile:@"setting_title.png"];
+		m_spSelectTitle.position = ccp(size.width / 2, size.height - 20);
+		m_spSelectTitle.anchorPoint = ccp(0.5f, 1);
+		[self addChild: m_spSelectTitle];
+		
+		//内容
+		[G drawBox:self pos:ccp(g_sceneSize.width / 8, g_sceneSize.height / 5) row:(int)(g_sceneSize.height * 3 / 5 - 16) / 8  col:(int)(g_sceneSize.width * 3 / 4 - 16) / 8];
+        
+        //        m_spSettingSoundValueBg = [CCSprite spriteWithFile:@"setting_sound_value_bg.png"];
+        //        m_spSettingSoundValueBg.position = ccp(size.width / 2, size.height / 2);
+        //        [self addChild:m_spSettingSoundValueBg];
+        //        
+        //        m_spSettingSoundValue = [CCSprite spriteWithFile:@"setting_sound_value.png"];
+        //        m_spSettingSoundValue.anchorPoint = ccp(0, 0.5);
+        //        m_spSettingSoundValue.position = ccp(size.width / 2 - [m_spSettingSoundValue contentSize].width / 2, size.height / 2);
+        //        [m_spSettingSoundValue setTextureRect:CGRectMake(0, 0, m_cntSoundValueTemp * 194.0 / 100.0, [m_spSettingSoundValue contentSize].height)];
+        //        [self addChild:m_spSettingSoundValue];
+        //        
+        //        CCMenuItem *m_menuItemValueAdd = [CCMenuItemSprite itemFromNormalSprite:[CCSprite spriteWithFile:@"setting_btn_add.png" rect:CGRectMake(0, 0, 30, 30)] selectedSprite:[CCSprite spriteWithFile:@"setting_btn_add.png" rect:CGRectMake(30, 0, 30, 30)] target: self selector:@selector(onSoundAdd)];
+        //        m_menuItemValueAdd.position = ccp(130, 0);
+        //        CCMenuItem *m_menuItemValueDec = [CCMenuItemSprite itemFromNormalSprite:[CCSprite spriteWithFile:@"setting_btn_dec.png" rect:CGRectMake(0, 0, 30, 14)] selectedSprite:[CCSprite spriteWithFile:@"setting_btn_dec.png" rect:CGRectMake(30, 0, 30, 14)] target: self selector:@selector(onSoundDec)];
+        //		m_menuItemValueDec.position = ccp(- 130, 0);
+        //        
+        //        CCMenu *m_menuSoundControl = [CCMenu menuWithItems:m_menuItemValueAdd, m_menuItemValueDec, nil];
+        //        m_menuSoundControl.position = ccp(size.width / 2, size.height / 2);
+        //        [self addChild:m_menuSoundControl];
+        
+        m_spSettingWord = [CCSprite spriteWithFile:@"setting_word.png"];
+		m_spSettingWord.position = ccp(size.width / 2 - [m_spSettingWord contentSize].width / 2, size.height / 2);
+		[self addChild:m_spSettingWord];
+		
+		m_spSettingBox = [CCSprite spriteWithFile:@"setting_choice_box.png"];
+		m_spSettingBox.position = ccp(size.width / 2 + [m_spSettingBox contentSize].width * 2, size.height / 2);
+		[self addChild:m_spSettingBox];
+		
+		m_spSettingFlag = [CCSprite spriteWithFile:@"setting_choice_flag.png"];
+		m_spSettingFlag.position = ccp(size.width / 2 + [m_spSettingFlag contentSize].width * 2, size.height / 2);
+		m_spSettingFlag.visible = g_hasSound;
+        [self addChild:m_spSettingFlag];
+        
+        
+		//按钮		
+		CCMenuItem *m_menuItemOk = [CCMenuItemImage itemWithNormalImage:@"com_btn_ok.png"
+														  selectedImage:@"com_btn_ok_.png" target: self selector:@selector(onUserOk)];
+		m_menuItemOk.position = ccp(0, 0);
+		m_menuItemOk.anchorPoint = ccp(0, 0);
+		
+		CCMenuItem *m_menuItemBack = [CCMenuItemImage itemWithNormalImage:@"com_btn_back.png"
+															selectedImage:@"com_btn_back_.png" target: self selector:@selector(onUserBack)];
+		m_menuItemBack.position = ccp(size.width, 0);
+		m_menuItemBack.anchorPoint = ccp(1, 0);
+		
+		CCMenu *menu = [CCMenu menuWithItems:m_menuItemOk, m_menuItemBack, nil];
+		menu.position = ccp(0, 0);
+		menu.anchorPoint = ccp(0, size.height);
+		[self addChild:menu z:99 tag:2];
+		self.isTouchEnabled = YES;
+	}
+	return self;
+}
+- (void)onOpenSound
+{
+    if (g_hasInGame) {
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"game.mp3"];
+    } else {
+        [[SimpleAudioEngine sharedEngine] playBackgroundMusic:@"menu.mp3"];
+    }
+}
+
+- (void)onCloseSound
+{
+	[[SimpleAudioEngine sharedEngine] pauseBackgroundMusic];
+}
+//- (void)onSoundAdd
+//{
+//	m_cntSoundValueTemp += 5;
+//    if (m_cntSoundValueTemp >= 100) {
+//        m_cntSoundValueTemp = 100;
+//    }
+//
+//    //设置成当前大小
+//    [CDAudioManager sharedManager].backgroundMusic.volume = (float)m_cntSoundValueTemp / 100;
+//    [m_spSettingSoundValue setTextureRect:CGRectMake(0, 0, m_cntSoundValueTemp * 194.0 / 100.0, [m_spSettingSoundValue contentSize].height)];
+//}
+//
+//- (void)onSoundDec
+//{
+//    m_cntSoundValueTemp -= 5;
+//    if (m_cntSoundValueTemp <= 0) {
+//        m_cntSoundValueTemp = 0;
+//    }
+//    //设置成当前大小
+//    [m_spSettingSoundValue setTextureRect:CGRectMake(0, 0, m_cntSoundValueTemp * 194.0 / 100.0, [m_spSettingSoundValue contentSize].height)];
+//    [CDAudioManager sharedManager].backgroundMusic.volume =(float)m_cntSoundValueTemp / 100;
+//}
+
+
+- (void)onUserOk
+{
+    //    m_cntSoundValue = m_cntSoundValueTemp;
+    //    //设置成当前大小
+    //    [m_spSettingSoundValue setTextureRect:CGRectMake(0, 0, m_cntSoundValue * 194.0 / 100.0, [m_spSettingSoundValue contentSize].height)];
+    //    [CDAudioManager sharedManager].backgroundMusic.volume =(float)m_cntSoundValue / 100;
+    [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionFadeBL class] duration:1];
+}
+
+- (void)onUserBack
+{
+    //    [m_spSettingSoundValue setTextureRect:CGRectMake(0, 0, m_cntSoundValue * 194.0 / 100.0, [m_spSettingSoundValue contentSize].height)];
+    //    [CDAudioManager sharedManager].backgroundMusic.volume =(float)m_cntSoundValue / 100;
+	[[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionFadeBL class] duration:1];
+}
+
+/***************************************************************************************/
+
+- (void)ccTouchesBegan:(NSSet *)touches withEvent:(UIEvent *)event  
+{  
+	// Choose one of the touches to work with
+	UITouch *touch = [touches anyObject];
+	CGPoint location = [touch locationInView:[touch view]];
+	location = [[CCDirector sharedDirector] convertToGL:location];
+    
+	if (CGRectIntersectsRect(CGRectMake(location.x, location.y, 1, 1), CGRectMake(g_sceneSize.width / 2, g_sceneSize.height / 4, g_sceneSize.width * 3 / 8, g_sceneSize.height / 2))) {
+		if (g_hasSound) {
+			g_hasSound = NO;
+			m_spSettingFlag.visible = NO;
+			[self onCloseSound];
+		} else {
+			g_hasSound = YES;
+			m_spSettingFlag.visible = YES;
+			[self onOpenSound];
+		}
+        
+	}
+	
+}  
+
+@end

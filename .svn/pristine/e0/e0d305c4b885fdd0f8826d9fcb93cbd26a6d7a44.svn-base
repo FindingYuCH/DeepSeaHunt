@@ -1,0 +1,80 @@
+//
+//  HelpScene.m
+//  DeepSeaHunt
+//
+//  Created by 东海 阮 on 12-8-15.
+//  Copyright 2012年 akn. All rights reserved.
+//
+
+#import "HelpScene.h"
+#import "GameDefine.h"
+#import "G.h"
+#import "CCDirector_.h"
+
+
+@implementation HelpScene
++ (id)scene
+{
+	CCScene *scene = [CCScene node];
+    HelpScene *layer = [HelpScene node];
+    [scene addChild:layer];
+	return scene;
+}
+
+
+-(id) init
+{
+	if ((self = [super init])) {
+		CGSize size = [[CCDirector sharedDirector] winSize];
+		
+		//背景
+		CCSprite *m_spComBg = [CCSprite spriteWithFile:@"gamescene1.png"];
+		m_spComBg.position = ccp(size.width / 2, size.height / 2);
+		[self addChild: m_spComBg];
+		
+		//标题
+		CCSprite *m_spSelectTitle = [CCSprite spriteWithFile:@"help_title.png"];
+		m_spSelectTitle.position = ccp(size.width / 2, size.height - 20);
+		m_spSelectTitle.anchorPoint = ccp(0.5f, 1);
+		[self addChild: m_spSelectTitle];
+		
+        //内容
+		[G drawBox:self pos:ccp(size.width / 8, size.height / 5) row:(int)(size.height * 3 / 5 - 16) / 8  col:(int)(size.width * 3 / 4 - 16) / 8];
+		
+        NSString *strHelp = @"\b----游戏简介---\n《深海狩猎》是一款休闲娱乐游戏。该游戏是由当前街机最具人气的游戏“捕鱼达人”移植而来。\n游戏分为普通场景和双倍区，双倍区发射子弹需要双倍的金币，当然收获的金币也是双倍的哦!，触摸屏的可以通过直接点击屏幕发射子弹，点击炮塔左右翅膀既可调整炮塔等级.\n";
+        int fontSize = 16 * g_sceneSize.width / 480;
+		CCLabelTTF *m_labelHelp = [[CCLabelTTF labelWithString:strHelp 
+                                                    dimensions:CGSizeMake(size.width * 3 / 4 - 16, size.height * 3 / 5 - 16) alignment:UITextAlignmentLeft
+                                                      fontName:@"Arial" fontSize:fontSize] retain];
+		m_labelHelp.position = ccp(g_sceneSize.width / 2, size.height * 4 / 5 - (size.height * 3 / 5 - 16) / 2 - 30);
+		[self addChild:m_labelHelp];		
+		//按钮		
+		CCMenuItem *m_menuItemOk = [CCMenuItemImage itemWithNormalImage:@"com_btn_ok.png"
+														  selectedImage:@"com_btn_ok_.png" target: self selector:@selector(onUserOk)];
+		m_menuItemOk.position = ccp(0, 0);
+		m_menuItemOk.anchorPoint = ccp(0, 0);
+		
+		CCMenuItem *m_menuItemBack = [CCMenuItemImage itemWithNormalImage:@"com_btn_back.png"
+															selectedImage:@"com_btn_back_.png" target: self selector:@selector(onUserBack)];
+		m_menuItemBack.position = ccp(size.width, 0);
+		m_menuItemBack.anchorPoint = ccp(1, 0);
+		
+		CCMenu *menu = [CCMenu menuWithItems:m_menuItemOk, m_menuItemBack, nil];
+		menu.position = ccp(0, 0);
+		menu.anchorPoint = ccp(0, size.height);
+		[self addChild:menu z:99 tag:2];
+		
+	}
+	return self;
+}
+
+-(void) onUserOk
+{
+	[[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionFadeBL class] duration:1];
+}
+
+-(void) onUserBack
+{
+	[[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionFadeBL class] duration:1];
+}
+@end
