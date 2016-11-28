@@ -779,17 +779,11 @@
 		9D86D775167B01850096EE80 /* EventKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D86D774167B01850096EE80 /* EventKit.framework */; };
 		9D86D787167B07900096EE80 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D86D786167B07900096EE80 /* AddressBook.framework */; };
 		9D86D78B167B07A40096EE80 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D86D78A167B07A40096EE80 /* AdSupport.framework */; };
-		9D86D78D167B094E0096EE80 /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D86D78C167B094E0096EE80 /* libxml2.dylib */; };
-		9D86D78F167B09700096EE80 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D86D78E167B09700096EE80 /* libsqlite3.0.dylib */; };
-		9D86D791167B097E0096EE80 /* libstdc++.6.0.9.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D86D790167B097E0096EE80 /* libstdc++.6.0.9.dylib */; settings = {ATTRIBUTES = (Required, ); }; };
-		9D86D793167B09970096EE80 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D86D792167B09970096EE80 /* libiconv.dylib */; };
 		9D86D816167B0FFF0096EE80 /* PassKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D86D815167B0FFF0096EE80 /* PassKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		9D9424F1167ACB5700B6983A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9424F0167ACB5700B6983A /* libz.dylib */; };
 		9D9425AE167AD48100B6983A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9425AD167AD48100B6983A /* CoreLocation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9D9425B0167AD4E000B6983A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9425AF167AD4E000B6983A /* CoreTelephony.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9D9425B2167AD4F100B6983A /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9425B1167AD4F100B6983A /* MapKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9D9425B4167AD50100B6983A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9425B3167AD50100B6983A /* SystemConfiguration.framework */; };
-		9D9425B6167AD51500B6983A /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D9425B5167AD51500B6983A /* libsqlite3.dylib */; };
 		9D9F7BA5165E3ACF009A6B6E /* button_about-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D9F7B97165E3AC9009A6B6E /* button_about-ipad.png */; };
 		9D9F7BA6165E3ACF009A6B6E /* button_about_-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D9F7B98165E3AC9009A6B6E /* button_about_-ipad.png */; };
 		9D9F7BA7165E3ACF009A6B6E /* button_back_1-ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 9D9F7B99165E3ACA009A6B6E /* button_back_1-ipad.png */; };
@@ -844,6 +838,11 @@
 		9DFD206B172A5D6400EAD97D /* update_word.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DFD2067172A5D6400EAD97D /* update_word.png */; };
 		9DFD206C172A5D6400EAD97D /* update_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 9DFD2068172A5D6400EAD97D /* update_button.png */; };
 		A02F61C91DE5345C001448B3 /* UMMobClick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A02F61C81DE5345C001448B3 /* UMMobClick.framework */; };
+		A03717311DEBFDC90066B711 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A03717301DEBFDC80066B711 /* libiconv.tbd */; };
+		A03717331DEBFDD80066B711 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A03717321DEBFDD80066B711 /* libstdc++.6.0.9.tbd */; };
+		A03717351DEBFDEA0066B711 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A03717341DEBFDEA0066B711 /* libsqlite3.0.tbd */; };
+		A03717371DEBFDF90066B711 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A03717361DEBFDF90066B711 /* libxml2.tbd */; };
+		A03717391DEBFE0F0066B711 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A03717381DEBFE0F0066B711 /* libz.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1802,17 +1801,11 @@
 		9D86D774167B01850096EE80 /* EventKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EventKit.framework; path = System/Library/Frameworks/EventKit.framework; sourceTree = SDKROOT; };
 		9D86D786167B07900096EE80 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		9D86D78A167B07A40096EE80 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		9D86D78C167B094E0096EE80 /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
-		9D86D78E167B09700096EE80 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
-		9D86D790167B097E0096EE80 /* libstdc++.6.0.9.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.6.0.9.dylib"; path = "usr/lib/libstdc++.6.0.9.dylib"; sourceTree = SDKROOT; };
-		9D86D792167B09970096EE80 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		9D86D815167B0FFF0096EE80 /* PassKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PassKit.framework; path = System/Library/Frameworks/PassKit.framework; sourceTree = SDKROOT; };
-		9D9424F0167ACB5700B6983A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		9D9425AD167AD48100B6983A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		9D9425AF167AD4E000B6983A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		9D9425B1167AD4F100B6983A /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9D9425B3167AD50100B6983A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		9D9425B5167AD51500B6983A /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		9D9F7B97165E3AC9009A6B6E /* button_about-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_about-ipad.png"; sourceTree = "<group>"; };
 		9D9F7B98165E3AC9009A6B6E /* button_about_-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_about_-ipad.png"; sourceTree = "<group>"; };
 		9D9F7B99165E3ACA009A6B6E /* button_back_1-ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_back_1-ipad.png"; sourceTree = "<group>"; };
@@ -1868,6 +1861,11 @@
 		9DFD2067172A5D6400EAD97D /* update_word.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = update_word.png; sourceTree = "<group>"; };
 		9DFD2068172A5D6400EAD97D /* update_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = update_button.png; sourceTree = "<group>"; };
 		A02F61C81DE5345C001448B3 /* UMMobClick.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = UMMobClick.framework; sourceTree = "<group>"; };
+		A03717301DEBFDC80066B711 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		A03717321DEBFDD80066B711 /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
+		A03717341DEBFDEA0066B711 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		A03717361DEBFDF90066B711 /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		A03717381DEBFE0F0066B711 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1875,13 +1873,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A03717391DEBFE0F0066B711 /* libz.tbd in Frameworks */,
+				A03717371DEBFDF90066B711 /* libxml2.tbd in Frameworks */,
+				A03717351DEBFDEA0066B711 /* libsqlite3.0.tbd in Frameworks */,
+				A03717331DEBFDD80066B711 /* libstdc++.6.0.9.tbd in Frameworks */,
+				A03717311DEBFDC90066B711 /* libiconv.tbd in Frameworks */,
 				5B1759EC1CF05C79009E5C6D /* WebKit.framework in Frameworks */,
 				5B1759EA1CF05BB2009E5C6D /* libBaiduMobAdSdk64bit.a in Frameworks */,
 				9D86D816167B0FFF0096EE80 /* PassKit.framework in Frameworks */,
-				9D86D793167B09970096EE80 /* libiconv.dylib in Frameworks */,
-				9D86D791167B097E0096EE80 /* libstdc++.6.0.9.dylib in Frameworks */,
-				9D86D78F167B09700096EE80 /* libsqlite3.0.dylib in Frameworks */,
-				9D86D78D167B094E0096EE80 /* libxml2.dylib in Frameworks */,
 				92A83C1C15528C1F003D0477 /* OpenGLES.framework in Frameworks */,
 				9D9425B0167AD4E000B6983A /* CoreTelephony.framework in Frameworks */,
 				A02F61C91DE5345C001448B3 /* UMMobClick.framework in Frameworks */,
@@ -1906,8 +1905,6 @@
 				9D86D761167B00A60096EE80 /* ImageIO.framework in Frameworks */,
 				9D86D75F167B00970096EE80 /* iAd.framework in Frameworks */,
 				9D86D75D167B004B0096EE80 /* MessageUI.framework in Frameworks */,
-				9D9425B6167AD51500B6983A /* libsqlite3.dylib in Frameworks */,
-				9D9424F1167ACB5700B6983A /* libz.dylib in Frameworks */,
 				9D269CC31676DB7D004FA83C /* StoreKit.framework in Frameworks */,
 				92A83C1A15528C1F003D0477 /* QuartzCore.framework in Frameworks */,
 				92A83C2415528C1F003D0477 /* UIKit.framework in Frameworks */,
@@ -2012,10 +2009,6 @@
 				9D21A622167FFFBC00D46DB2 /* icon114.png */,
 				9D21A620167FFFB700D46DB2 /* icon57.png */,
 				9D86D815167B0FFF0096EE80 /* PassKit.framework */,
-				9D86D792167B09970096EE80 /* libiconv.dylib */,
-				9D86D790167B097E0096EE80 /* libstdc++.6.0.9.dylib */,
-				9D86D78E167B09700096EE80 /* libsqlite3.0.dylib */,
-				9D86D78C167B094E0096EE80 /* libxml2.dylib */,
 				9D86D78A167B07A40096EE80 /* AdSupport.framework */,
 				9D86D786167B07900096EE80 /* AddressBook.framework */,
 				9D86D774167B01850096EE80 /* EventKit.framework */,
@@ -2031,12 +2024,10 @@
 				9D86D760167B00A60096EE80 /* ImageIO.framework */,
 				9D86D75E167B00970096EE80 /* iAd.framework */,
 				9D86D75C167B004B0096EE80 /* MessageUI.framework */,
-				9D9425B5167AD51500B6983A /* libsqlite3.dylib */,
 				9D9425B3167AD50100B6983A /* SystemConfiguration.framework */,
 				9D9425B1167AD4F100B6983A /* MapKit.framework */,
 				9D9425AF167AD4E000B6983A /* CoreTelephony.framework */,
 				9D9425AD167AD48100B6983A /* CoreLocation.framework */,
-				9D9424F0167ACB5700B6983A /* libz.dylib */,
 				9D269CC21676DB7D004FA83C /* StoreKit.framework */,
 				9D1DAAC4165CC2A1006347B4 /* Default-Portrait@2x~ipad.png */,
 				9D1DAAC2165CC29D006347B4 /* Default-Portrait~ipad.png */,
@@ -2062,6 +2053,11 @@
 		92A83C1815528C1F003D0477 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A03717381DEBFE0F0066B711 /* libz.tbd */,
+				A03717361DEBFDF90066B711 /* libxml2.tbd */,
+				A03717341DEBFDEA0066B711 /* libsqlite3.0.tbd */,
+				A03717321DEBFDD80066B711 /* libstdc++.6.0.9.tbd */,
+				A03717301DEBFDC80066B711 /* libiconv.tbd */,
 				5B1759EB1CF05C79009E5C6D /* WebKit.framework */,
 				92A83C1915528C1F003D0477 /* QuartzCore.framework */,
 				92A83C1B15528C1F003D0477 /* OpenGLES.framework */,
@@ -3035,8 +3031,8 @@
 				9D27DE9A163148C70036A754 /* UHelpScene.h */,
 				9D27DE9B163148C70036A754 /* UHelpScene.m */,
 				9D1F2E291634DC38009FF2EC /* UGameScene.h */,
-				9D2ADA5116781B80005B2C69 /* UAboutScene.h */,
 				9D1F2E2A1634DC38009FF2EC /* UGameScene.m */,
+				9D2ADA5116781B80005B2C69 /* UAboutScene.h */,
 				9D2ADA5216781B81005B2C69 /* UAboutScene.m */,
 				9D1C114F17379DA700B7E240 /* UGameSceneChoice.h */,
 				9D1C115017379DA700B7E240 /* UGameSceneChoice.m */,
@@ -4333,6 +4329,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "23db1a98-0d8a-4595-8891-5e158d43d69c";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = NO;
 				VALID_ARCHS = "armv6 armv7";
@@ -4408,6 +4405,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "23db1a98-0d8a-4595-8891-5e158d43d69c";
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VALID_ARCHS = "armv6 armv7";

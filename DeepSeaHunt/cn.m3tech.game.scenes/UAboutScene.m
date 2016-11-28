@@ -8,6 +8,8 @@
 
 #import "UAboutScene.h"
 #import "CCDirector_.h"
+#import "cocos2d.h"
+#import "CCDirector.h"
 
 @implementation UAboutScene
 + (id)scene{
@@ -70,5 +72,7 @@
 -(void)backButtonClickEvent
 {
     [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionFadeBL class] duration:1];
+    
+    
 }
 @end

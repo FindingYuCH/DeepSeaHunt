@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "cocos2d.h"
+#import <CoreLocation/CoreLocation.h>
 
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>
 {
@@ -15,6 +16,7 @@
 	UINavigationController *navController_;
     
 	CCDirectorIOS	*director_;							// weak ref
+    CLLocationManager * _locationManager;
 }
 
 @property (nonatomic, retain) UIWindow *window;

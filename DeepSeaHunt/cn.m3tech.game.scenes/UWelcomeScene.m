@@ -48,7 +48,7 @@
         CCSprite *buttonBack2=[CCSprite spriteWithFile:@"button_back_2.png"];
         
         
-        //按钮
+        //按钮(菜单项)
         CCMenuItem *startGameItem=[CCMenuItemImage itemWithNormalImage:@"button_start.png" selectedImage:@"button_start_.png" target:self selector:@selector(startGame)];
         CCMenuItem *gameSettingItem=[CCMenuItemImage itemWithNormalImage:@"button_setting.png" selectedImage:@"button_setting_.png" target:self selector:@selector(gameSetting)];
         CCMenuItem *gameCenterModeItem=[CCMenuItemImage itemWithNormalImage:@"button_more.png" selectedImage:@"button_more_.png" target:self selector:@selector(gameCenterMode)]; 
@@ -124,17 +124,19 @@
         [self addChild:buttonBack z:2];
         [self addChild:buttonBack1 z:2];
         [self addChild:buttonBack2 z:2];
-        
+        //菜单 添加菜单项
         CCMenu *temMenu=[CCMenu menuWithItems:startGameItem,gameCenterModeItem,gameSettingItem,gameHelpItem,gameAboutItem, nil];
+        //设置菜单位置
         temMenu.position=CGPointZero;
-        
+        //添加菜单
         [self addChild:temMenu z:1];
-        
+        //加载声音
         [self initSound];
+        //播放音乐
         [self playUIMusic];
         
         
-        //气泡
+        //气泡(初始化)
 		m_spbnBubbles = [CCSpriteBatchNode batchNodeWithFile:@"bubble.png"];
 		for (int i = 0; i < 20; i ++) {
 			Bubble *bubble = [Bubble bubbleWithFile:@"bubble.png"];
@@ -143,7 +145,7 @@
 		}
         [self addChild:m_spbnBubbles z:0];
 		
-		[self schedule:@selector(update) interval:0.05];
+		[self schedule:@selector(updates) interval:0.05];
         
     }
     //self.isInVideo = @"1";
@@ -163,33 +165,41 @@
     GAME_IS_PLAY_EFFECT=record->isEffectPlay;
     GAME_IS_PLAY_SOUND=record->isBackMusicPlay;    
 }
+//开始游戏
 -(void)startGame
 {
 //    gameModeType=kModeTypeForOne;
     GAME_IS_FOR_GAMECENTER=NO;
     CCScene *scene=[UGameSceneChoice scene];
+    //切换场景
     [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:1 scene:scene]];
 }
+//游戏中心模式
 -(void)gameCenterMode
 {
 //    gameModeType=kModeTypeForGameCenter;
     GAME_IS_FOR_GAMECENTER=YES;
     CCScene *scene=[GameSceneForGameCenter scene];
+    //切换场景
     [[CCDirector sharedDirector] replaceScene:[CCTransitionFadeBL transitionWithDuration:1 scene:scene]];
 }
-
+//游戏帮助
 -(void)gameHelp
 {
     CCScene *scene=[UHelpScene scene];
+    //进入场景
     [[CCDirector sharedDirector] pushScene:[CCTransitionFadeBL transitionWithDuration:1 scene:scene]];
 }
+//游戏关于
 -(void)gameAbout
 {
     CCScene *scene=[UAboutScene scene];
     [[CCDirector sharedDirector] pushScene:[CCTransitionFadeBL transitionWithDuration:1 scene:scene]];
 }
+//游戏设置
 -(void)gameSetting
 {
+    //进入场景
     CCScene *scene=[USettigScene scene];
     [[CCDirector sharedDirector] pushScene:[CCTransitionFadeBL transitionWithDuration:1 scene:scene]];
 }
@@ -218,7 +228,7 @@
         [GAME_AUDIO playBackgroundMusic:kSoundTypeForUIMusic];
     }
 }
-- (void)update
+- (void)updates
 {
     
 	CCArray* bubbles = [m_spbnBubbles children];	
@@ -231,7 +241,7 @@
 			count ++;
 		}
 	}
-	
+	//为什么要是15,最后一次 count 为20
 	if (count < 15) {
 		for (int i = 0; i < 20; i ++) {
 			CCNode* node = [bubbles objectAtIndex:i];
@@ -249,9 +259,11 @@
 
 -(BOOL) enableLocation
 {
-    //启用location会有一次alert提示,请根据系统进行相关配置
+    //启用location会有一次alert提示,请根据系统进行相关配置,ios9之后要在info.plist中配置(授权)
     return YES;
 }
+
+#pragma mark ===加载广告
 
 - (IBAction)loadInterAd {
     self.adInterstitial = [[BaiduMobAdInterstitial alloc] init];

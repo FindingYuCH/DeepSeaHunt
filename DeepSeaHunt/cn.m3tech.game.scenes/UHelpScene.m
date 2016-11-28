@@ -71,6 +71,9 @@
 
 -(void)backButtonClickEvent
 {
+    NSLog(@"我要返回到主页");
+    
     [[CCDirector sharedDirector] popSceneWithTransition:[CCTransitionFadeBL class] duration:1];
+//    [[CCDirector sharedDirector] popScene];
 }
 @end
