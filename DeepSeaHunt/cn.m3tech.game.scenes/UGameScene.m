@@ -56,16 +56,23 @@ static UGameScene *sharedGameScene;
 
 #define kAdViewPortraitRect CGRectMake(0, 0, kBaiduAdViewSizeDefaultWidth, kBaiduAdViewSizeDefaultHeight)
 
+
+
+
 + (id)scene:(int)p{
     CCScene *scene = [CCScene node];
     UGameScene *layer = [[UGameScene alloc] init:p];
     [scene addChild:layer];
 	return scene;
 }
+
 +(UGameScene*)sharedScene
 {
     return sharedGameScene;
 }
+
+#pragma mark -- 初始化场景
+
 -(id)init:(int)p
 {
     if (self=[super init]) {
@@ -100,6 +107,7 @@ static UGameScene *sharedGameScene;
          }
         temBackGround.anchorPoint=CGPointZero;
         [self addChild:temBackGround z:-1];
+#pragma mark 菜单按钮点击
         //暂停菜单项
         CCMenuItem *temPauseItem=[CCMenuItemImage itemWithNormalImage:@"game_pause.png" selectedImage:@"game_pause_.png" target:self selector:@selector(showMenu)];
         //游戏截图菜单项
@@ -248,11 +256,10 @@ static UGameScene *sharedGameScene;
         //[[[CCDirector sharedDirector] view]addSubview:banner.viewController.view];
     }
 }
+
 -(void)initRes
 {
     moneyForGold=[[CCSprite spriteWithFile:@"game_money_icon.png"] retain];
-    
-    
     
     fishSprireArr=[[NSMutableArray alloc] init];
     
@@ -464,7 +471,7 @@ static UGameScene *sharedGameScene;
     
     return y*10000+m*100+d;
 }
-//再线领取金币计时
+//在线领取金币计时
 - (void)getFreeTimeControl
 {
     if (getFreeTimeNum>0) {
@@ -513,6 +520,9 @@ static UGameScene *sharedGameScene;
     }
     
 }
+
+#pragma mark ==金币特效
+
 - (void)freeGoldEffect:(int)num pos:(CGPoint)point
 {
     int goldW,goldH,timeNum;
@@ -583,6 +593,9 @@ static UGameScene *sharedGameScene;
     
     
 }
+
+#pragma mark ==显示头像和等级
+
 -(void)showHeadAndLevel
 {
     id temMove=[CCMoveTo actionWithDuration:0.5f position:ccp(20,260)];
@@ -592,17 +605,26 @@ static UGameScene *sharedGameScene;
     }
     [self scheduleOnce:@selector(ADControl) delay:kTimeWarttingAD];
 }
+
+#pragma mark == 隐藏头像和等级
+
 -(void)hideHeadAndLevel
 {
     id temMove=[CCMoveTo actionWithDuration:0.5f position:ccp(-[self getChildByTag:kTagHeadBack].contentSize.width*1.5,[self getChildByTag:kTagHeadBack].position.y)];
     [[self getChildByTag:kTagHeadBack] runAction:temMove];
 }
+
+#pragma mark = 显示广告
+
 -(void)showAD
 {
     [self showBannerAD];
     [self hideHeadAndLevel];
     [self scheduleOnce:@selector(hideAD) delay:kTimeShowAD];
 }
+
+#pragma mark ==隐藏广告
+
 -(void)hideAD
 {
     [self hideBannerAD];
@@ -668,6 +690,9 @@ static UGameScene *sharedGameScene;
     
 }
 /// dijk 2016-05-21 去掉mogo广告
+
+#pragma mark ==界面初始化(部分) 炮台,雪,按钮等
+
 -(void)initConnon
 {
     //炮台背景
@@ -920,7 +945,7 @@ static UGameScene *sharedGameScene;
     [connon addLaserSP:sp];
 }
 
-//激光
+#pragma mark --激光
 -(void)laser:(int)angle  point:(CGPoint)point
 {
     laser=[[ULaser alloc] init:angle];
@@ -935,7 +960,7 @@ static UGameScene *sharedGameScene;
     
 }
 
-//type 网的大小
+#pragma mark -- type 网的大小
 -(void)createBlast:(CGPoint)point type:(int)type
 {
    ParticleEffectSelfMade* particle=[[ParticleEffectSelfMade alloc] init:200 type:type];
@@ -943,6 +968,7 @@ static UGameScene *sharedGameScene;
     particle.texture = [[CCTextureCache sharedTextureCache] addImage: @"bb.png"];
     particle.position = point;
 }
+
 -(void)turnGravity
 {
     [laser setLife:0.5];
@@ -956,6 +982,9 @@ static UGameScene *sharedGameScene;
 {
     [playerLvLabel setString:[NSString stringWithFormat:@"%d",playerLevel]];
 }
+
+  #pragma mark --商店
+
 -(void)showShop
 {
 //    NSLog(@"显示商店");
@@ -971,6 +1000,9 @@ static UGameScene *sharedGameScene;
 {
 //    NSLog(@"更多推荐");
 }
+
+#pragma mark -- 等级 
+
 -(void)levelAdd
 {
         connon.level++;
@@ -981,6 +1013,7 @@ static UGameScene *sharedGameScene;
 
 //    NSLog(@"等级增加=%d",connon.level);
 }
+
 -(void)levelDec
 {
         connon.level--;
@@ -991,7 +1024,6 @@ static UGameScene *sharedGameScene;
 
 //    NSLog(@"等级降低=%d",connon.level);
 }
-
 
 
 #pragma mark ====暂停状态
@@ -1042,7 +1074,7 @@ static UGameScene *sharedGameScene;
 //}
 
 
-#pragma mark ===显示商店
+#pragma mark ===商店    显示商店
 
 -(void)showShopLayer
 {
@@ -1057,8 +1089,10 @@ static UGameScene *sharedGameScene;
     [self addChild:shopLayer z:99];
     
     gameState=kGameStateForShop;
-    
-    [self gamePause];
+    //游戏暂停,鱼群也是要暂停
+//    [self gamePause];
+    //只是屏幕不可点击
+    self.isTouchEnabled=NO;
     [self hideBannerAD];
     [self pauseAllMenuEnable];
     itemShop.isEnabled=YES;
@@ -3219,5 +3253,20 @@ static UGameScene *sharedGameScene;
         self.adInterstitial = nil;
     }
 }
+
+- (void) onEnterTransitionDidFinish{
+    
+    NSLog(@"载入中...");
+    if (gameState == kGameStateForMenu) {
+        [self gamePause];
+    }
+}
+
+//- (void) onExitTransitionDidStart{
+//    NSLog(@"start");
+//    if (gameState == kGameStateForMenu) {
+//        [self gamePause];
+//    }
+//}
 
 @end

@@ -28,7 +28,9 @@
 #import "BaiduMobAdInterstitial.h"
 #import "BaiduMobAdDelegateProtocol.h"
 #import "BaiduMobAdView.h"
-#define kTimeShowAD 20
+//广告显示时间长度
+#define kTimeShowAD 7
+//头像显示时间长度
 #define kTimeWarttingAD 20
 
 #define kAppKey             @"3941824814"

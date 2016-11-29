@@ -4285,7 +4285,7 @@
 				);
 				INFOPLIST_FILE = DeepSeaHunt/Resources/Info.plist;
 				INSTALL_PATH = "$(INSTALL_GROUP)";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",
@@ -4361,7 +4361,7 @@
 				);
 				INFOPLIST_FILE = DeepSeaHunt/Resources/Info.plist;
 				INSTALL_PATH = "$(INSTALL_GROUP)";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)",

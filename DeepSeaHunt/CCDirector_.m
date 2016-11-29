@@ -22,6 +22,7 @@
             CCScene* scene = [transitionClass transitionWithDuration:t scene:[scenesStack_ objectAtIndex:c-1]];
             [scenesStack_ replaceObjectAtIndex:c-1 withObject:scene];
             nextScene_ = scene;
+            
             //解决了问题
             [[CCTouchDispatcher sharedDispatcher] removeAllDelegates];
             
